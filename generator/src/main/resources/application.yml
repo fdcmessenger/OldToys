@@ -5,6 +5,7 @@ spring:
   devtools:
     restart:
       enabled: true
+      additional-paths: src/main/java,src/main/resources/templates,src/main/resources/META-INF
   datasource:
       url: jdbc:mysql://127.0.0.1:3306/oldtoys?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
       username: root

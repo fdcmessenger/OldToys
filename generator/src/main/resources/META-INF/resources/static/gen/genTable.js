@@ -154,9 +154,14 @@ GenTable.search = function () {
 };
 $(function () {
     var defaultColunms = GenTable.initColumn();
-    var table = new BSTable("GenTable", "/gen/genTable/listData", defaultColunms);
+    var ctex = "[[@{/}]]";
+//     var ctx = ${#request.getContextPath()}; 
+    console.log(ctex);
+//    console.log(ctx);
+    var table = new BSTable("GenTable",  "/gen/genTable/listData", defaultColunms);
     GenTable.table = table.init();
     $(window).resize(function () {
+        
         GenTable.table.resetSize(Feng.getHeight());
     });
 
