@@ -1,0 +1,42 @@
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <th:block th:include="include :: head('选择数据库表')" />
+    </head>   
+
+    <body class="popbody">
+        <div id="main">
+            <form:form id="inputForm" modelAttribute="genTable" action="#" method="post" cssClass="form-horizontal">
+                <form:hidden path="id"/>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">表名：</label>
+                            <div class="col-sm-5">
+                                <form:select path="name" class="form-control">
+                                    <form:options items="${tableList}" itemLabel="nameAndComments" itemValue="name" htmlEscape="false"/>
+                                </form:select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <hr/>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-actions col-sm-1">
+                            <input id="btnSubmit" class="btn btn-primary " type="submit" value="保 存" />&nbsp;
+                        </div>
+                        <div class="form-actions col-sm-1">
+                            <input id="btnCancel" class="btn btn-warning" type="button" value="返 回" onclick="DbTable.close();"/>
+                        </div>
+                    </div>
+                </div>
+
+            </form:form>
+        </div>
+        <div th:replace="include :: footer"></div>
+        <script src="@{/gen/selectTable.js}"></script>
+    </body>
+</html>

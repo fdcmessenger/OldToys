@@ -1,0 +1,15 @@
+{
+
+    "menus": [
+        {
+            "menu": "代码生成",
+            "icon": "laptop",
+            "items": [{
+                    "name": "业务表管理",
+                    "url": "/gen/genTable"
+                }
+
+            ]
+        }
+    ]
+}
