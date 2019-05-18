@@ -5,8 +5,10 @@
     <artifactId>parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <name>old toys parent</name>
     <modules>
         <module>generator</module>
+        <module>gen</module>
     </modules>
     <properties>
 

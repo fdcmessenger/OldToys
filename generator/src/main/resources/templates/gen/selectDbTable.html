@@ -4,18 +4,20 @@
         <th:block th:include="include :: head('选择数据库表')" />
     </head>   
 
-    <body class="popbody">
-        <div id="main">
-            <form:form id="inputForm" modelAttribute="genTable" action="#" method="post" cssClass="form-horizontal">
-                <form:hidden path="id"/>
+    <body >
+        <div >
+            <form id="inputForm"  action="#" method="post" class="form-horizontal">
+                <input type="hidden" id="id" name="id"/>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">表名：</label>
                             <div class="col-sm-5">
-                                <form:select path="name" class="form-control">
-                                    <form:options items="${tableList}" itemLabel="nameAndComments" itemValue="name" htmlEscape="false"/>
-                                </form:select>
+
+                                <select id="name" name="name" class="form-control" >
+                                    <option value="">所有</option>
+                                    <option th:each="table:${tableList}" th:text="${table.comments}" th:value="${table.name}"></option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -37,6 +39,6 @@
             </form:form>
         </div>
         <div th:replace="include :: footer"></div>
-        <script src="@{/gen/selectTable.js}"></script>
+        <script th:src="@{/static/gen/selectTable.js}"></script>
     </body>
 </html>

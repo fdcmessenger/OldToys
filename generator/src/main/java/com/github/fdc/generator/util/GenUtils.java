@@ -54,7 +54,7 @@ public class GenUtils {
      */
     public static void initColumnField(GenTable genTable) {
         for (GenTableColumn column : genTable.getColumnList()) {
-
+            column.setGenTable(genTable);
             // 如果是不是新增列，则跳过。
             if (column.getId() != null) {
                 continue;

@@ -1,0 +1,121 @@
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <th:block th:include="include :: head('代码方案管理')" />
+    </head>
+    <body class="gray-bg">
+        <div class="container-div">
+            <div class="row">
+                <div class="col-sm-12 search-collapse">
+                    <form id="gen-form">
+                        <div class="select-list">
+                            <ul>
+                                <li>
+                                    表名称：<input type="text" name="tableName"/>
+                                </li>
+                                <li>
+                                    表描述：<input type="text" name="tableComment"/>
+                                </li>
+                                <li class="select-time">
+                                    <label>表时间： </label>
+                                    <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+                                    <span>-</span>
+                                    <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+                                </li>
+                                <li>
+                                    <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="btn-group-sm" id="toolbar" role="group">
+                    <a class="btn btn-success" onclick="javascript:batchGenCode()" shiro:hasPermission="tool:gen:code">
+                        <i class="fa fa-download"></i> 批量生成
+                    </a>
+                </div>
+
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="GenTable" data-mobile-responsive="true"></table>
+                </div>
+            </div>
+        </div>
+        <th:block th:include="include :: footer" />
+        <script type="text/javascript">
+            var GenTable = {
+                id: "GenTable", //表格id
+                seItem: null, //选中的条目
+                table: null,
+                dbTableName: null,
+                layerIndex: -1
+            };
+            /**
+             * 初始化表格的列
+             */
+            GenTable.initColumn = function () {
+                var columns = [
+                    {field: 'selectItem', radio: true},
+                    {title: 'id', field: 'id', visible: true, align: 'center', valign: 'middle', sortable: true},
+                    {field: 'tableName', title: '表名称', width: '20%', sortable: true},
+                    {field: 'tableComment', title: '表描述', width: '20%', sortable: true},
+                    {field: 'createTime', title: '创建时间', width: '20%', sortable: true},
+                    {field: 'updateTime', title: '更新时间', width: '20%', sortable: true},
+                    {title: '操作', width: '20%', align: 'center',
+                        formatter: function (value, row, index) {
+                            var msg = '<a class="btn btn-primary btn-xs" href="#" onclick="GenTable.genCode(\'' + row.tableName + '\')"><i class="fa fa-bug"></i>生成代码</a> ';
+                            return msg;
+                        }
+                    }
+                ];
+                return columns;
+            };
+
+            GenTable.resetSearch = function () {
+                GenTable.search();
+            };
+
+            GenTable.search = function () {
+                var queryData = {};
+                GenTable.table.refresh({query: queryData});
+            };
+
+            // 生成代码
+            function genCode(tableName) {
+                $.modal.confirm("确定要生成" + tableName + "表代码吗？", function () {
+                    location.href = prefix + "/genCode/" + tableName;
+                    layer.msg('执行成功,正在生成代码请稍后…', {icon: 1});
+                })
+            }
+            GenTable.genCode = function (tableName) {
+                var operation = function () {
+                    var ajax = new $ax("/tool/gen/genCode/" + tableName, function () {
+                        Feng.success("操作成功!");
+                        GenTable.table.refresh();
+                    }, function (data) {
+                        Feng.error("操作失败!" + data.responseJSON.message + "!");
+                    });
+                    ajax.type="get";
+                    ajax.start();
+                };
+                var operation1 = function () {
+                    location.href = "/tool/gen/genCode/" + tableName;
+                };
+                Feng.confirm("确定要生成" + tableName + "表代码吗？", operation1);
+            };
+            $(function () {
+                var defaultColunms = GenTable.initColumn();
+                var table = new BSTable("GenTable", "/tool/gen/list", defaultColunms);
+                GenTable.table = table.init();
+                $(window).resize(function () {
+                    GenTable.table.resetSize(Feng.getHeight());
+                });
+
+            });
+
+        </script>
+
+
+    </body>
+</html>

@@ -95,7 +95,7 @@ GenTable.selectDbTableBeforeAddGenTable = function () {
         area: ['800px', '650px'], //宽高
         fix: false, //不固定
         maxmin: true,
-        content: Feng.ctxPath + '/gen/genTable/selectDbTable'
+        content: '/gen/genTable/selectDbTable'
     });
     this.layerIndex = index;
 };
@@ -106,7 +106,7 @@ GenTable.openAddGenTable = function () {
         area: ['100%', '100%'], //宽高
         fix: false, //不固定
         maxmin: true,
-        content: Feng.ctxPath + '/gen/genTable/genTableForm?name=' + this.dbTableName
+        content:  '/gen/genTable/genTableForm?name=' + this.dbTableName
     });
     layer.full(index);
     this.layerIndex = index;
@@ -119,7 +119,7 @@ GenTable.openEditGenTable = function () {
             area: ['100%', '100%'], //宽高
             fix: false, //不固定
             maxmin: true,
-            content: Feng.ctxPath + '/gen/genTable//genTableForm?id=' + this.seItem.id
+            content:  '/gen/genTable//genTableForm?id=' + this.seItem.id
         });
         layer.full(index);
         this.layerIndex = index;
@@ -129,7 +129,7 @@ GenTable.delete = function () {
 //    console.log(SubSys.seItem.id);
     if (this.checkOne()) {
         var operation = function () {
-            var ajax = new $ax(Feng.ctxPath + "/gen/genTable/delete", function () {
+            var ajax = new $ax( "/gen/genTable/delete", function () {
                 Feng.success("删除成功!");
                 GenTable.table.refresh();
             }, function (data) {

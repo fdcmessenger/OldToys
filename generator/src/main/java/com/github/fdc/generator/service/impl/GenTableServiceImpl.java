@@ -114,6 +114,7 @@ public class GenTableServiceImpl extends BaseServiceImple<GenTable,String> imple
                     b = true;
                 }
             }
+                column.setGenTable(iniTb);
             if (!b) {
                 iniTb.getColumnList().add(column);
             }

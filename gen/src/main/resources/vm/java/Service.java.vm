@@ -1,0 +1,25 @@
+package ${package}.service;
+
+import ${package}.domain.${className};
+import com.gitee.fdc.base.service.BaseService;
+import java.util.List;
+
+/**
+ * ${tableComment} 服务层
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface I${className}Service extends DeleteLogicService<${className},String> 
+{
+
+	/**
+     * 查询${tableComment}列表
+     * 
+     * @param ${classname} ${tableComment}信息
+     * @return ${tableComment}集合
+     */
+	public List<${className}> select${className}List(${className} ${classname});
+	
+	
+}

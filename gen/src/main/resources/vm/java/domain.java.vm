@@ -1,0 +1,38 @@
+package ${package}.domain;
+
+import com.ruoyi.system.constant.CmsBaseEntity;
+import javax.persistence.Table;
+import lombok.Data;
+#foreach ($column in $columns)
+#if($column.attrType == 'Date' && ($column.attrname != 'createBy' && $column.attrname != 'createTime' && $column.attrname != 'updateBy' && $column.attrname != 'updateTime' && $column.attrname != 'id'&& $column.attrname != 'delFlag'))
+import java.util.Date;
+#break
+#end
+#end
+#foreach ($column in $columns)
+#if($column.attrType == 'BigDecimal')
+import java.math.BigDecimal;
+#break
+#end
+#end
+
+/**
+ * ${tableComment}表 ${tableName}
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+@Table(name = "${tableName}")
+public class ${className} extends CmsBaseEntity
+{
+	private static final long serialVersionUID = 1L;
+	
+#foreach ($column in $columns)
+#if($column.attrname != 'createBy' && $column.attrname != 'createTime' && $column.attrname != 'updateBy' && $column.attrname != 'updateTime'&& $column.attrname != 'id'&& $column.attrname != 'delFlag')
+	/** $column.columnComment */
+	private $column.attrType $column.attrname;
+#end
+#end
+
+}

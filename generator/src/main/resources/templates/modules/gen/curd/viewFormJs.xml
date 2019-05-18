@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <name>viewFormJs</name>
+    <filePath>src/main/resources/META-INF/resources/static/modules/${moduleName}/${subModuleName}</filePath>
+    <fileName>${className}Form.js</fileName>
+    <content><![CDATA[
+var ${ClassName}InfoDlg = {
+    infoData: {},
+    validations: {
+        rules: {
+        },
+        messages: {
+        }
+    }
+};
+
+/**
+ * 关闭此对话框
+ */
+${ClassName}InfoDlg.close = function () {
+    parent.layer.close(window.parent.${ClassName}.layerIndex);
+}
+
+/**
+ * 提交修改
+ */
+${ClassName}InfoDlg.editSubmit = function () {
+    var ajax = new $ax(Feng.ctxPath + "/${urlPrefix}/save", function (data) {
+        if (data.message)
+            Feng.success(data.message);
+        else
+            Feng.success("修改成功!");
+        window.parent.${ClassName}.search();
+        ${ClassName}InfoDlg.close();
+    }, function (data) {
+        Feng.error("修改失败!" + data.responseJSON.message + "!");
+    });
+    ajax.setData(this.infoData);
+    ajax.start();
+};
+
+$(function () {
+
+    var result = $.extend(${ClassName}InfoDlg.validations, {
+        onfocusout: function (element) {
+            $(element).valid();
+        },
+        onkeyup: false,
+        submitHandler: function (form) {
+            var serdata = $(form).serializeArray();
+            ${ClassName}InfoDlg.infoData = serdata;
+            ${ClassName}InfoDlg.editSubmit();
+        }
+    });
+    $("#inputForm").validate(result);
+});
+
+   ]]>
+    </content>
+</template>
