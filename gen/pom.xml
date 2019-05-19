@@ -17,23 +17,52 @@
             <groupId>com.gitee.fdc</groupId>
             <artifactId>generalDao</artifactId>
         </dependency>
-        <!--        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>2.9.0</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>com.gitee.fdc</groupId>
-            <artifactId>tools</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>-->
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
             <version>1.7</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+        
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.1.4.RELEASE</version>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+                <!--                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>-->
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <!--<version>3.1.0</version>-->
+                <configuration>
+                    <!--                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>-->
+                    <excludes>
+                        <exclude>**/*Application.*</exclude>
+                        <exclude>**/application.*</exclude>
+                        <exclude>**/spring-devtools.properties</exclude>
+                        <exclude>**/menu.json</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

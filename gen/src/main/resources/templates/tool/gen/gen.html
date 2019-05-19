@@ -2,6 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
     <head>
         <th:block th:include="include :: head('代码方案管理')" />
+        <!--<link th:href="@{/static/oldtoys/css/ry-ui.css}" rel="stylesheet"/>-->
+        <link th:href="@{/static/oldtoys/css/oldtoys.css}" rel="stylesheet"/>
     </head>
     <body class="gray-bg">
         <div class="container-div">
@@ -23,7 +25,7 @@
                                     <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
                                 </li>
                                 <li>
-                                    <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                    <a class="btn btn-primary btn-rounded btn-sm" onclick="GenTable.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
                                     <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                                 </li>
                             </ul>
@@ -31,7 +33,7 @@
                     </form>
                 </div>
 
-                <div class="btn-group-sm" id="toolbar" role="group">
+                <div class="btn-group-sm" id="GenTableToolbar" role="group">
                     <a class="btn btn-success" onclick="javascript:batchGenCode()" shiro:hasPermission="tool:gen:code">
                         <i class="fa fa-download"></i> 批量生成
                     </a>
@@ -43,6 +45,8 @@
             </div>
         </div>
         <th:block th:include="include :: footer" />
+        <script th:src="@{/static/oldtoys/js/bootstrap-table-object.js}"></script>
+        <script th:src="@{/static/oldtoys/js/oldtoys.js}"></script>
         <script type="text/javascript">
             var GenTable = {
                 id: "GenTable", //表格id
@@ -56,8 +60,8 @@
              */
             GenTable.initColumn = function () {
                 var columns = [
-                    {field: 'selectItem', radio: true},
-                    {title: 'id', field: 'id', visible: true, align: 'center', valign: 'middle', sortable: true},
+//                    {field: 'selectItem', radio: true},
+//                    {title: 'id', field: 'id', visible: true, align: 'center', valign: 'middle', sortable: true},
                     {field: 'tableName', title: '表名称', width: '20%', sortable: true},
                     {field: 'tableComment', title: '表描述', width: '20%', sortable: true},
                     {field: 'createTime', title: '创建时间', width: '20%', sortable: true},
@@ -89,27 +93,27 @@
                 })
             }
             GenTable.genCode = function (tableName) {
-                var operation = function () {
-                    var ajax = new $ax("/tool/gen/genCode/" + tableName, function () {
-                        Feng.success("操作成功!");
-                        GenTable.table.refresh();
-                    }, function (data) {
-                        Feng.error("操作失败!" + data.responseJSON.message + "!");
-                    });
-                    ajax.type="get";
-                    ajax.start();
-                };
+//                var operation = function () {
+//                    var ajax = new $ax("/tool/gen/genCode/" + tableName, function () {
+//                        Feng.success("操作成功!");
+//                        GenTable.table.refresh();
+//                    }, function (data) {
+//                        Feng.error("操作失败!" + data.responseJSON.message + "!");
+//                    });
+//                    ajax.type="get";
+//                    ajax.start();
+//                };
                 var operation1 = function () {
                     location.href = "/tool/gen/genCode/" + tableName;
                 };
-                Feng.confirm("确定要生成" + tableName + "表代码吗？", operation1);
+                $.msgs.confirm("确定要生成" + tableName + "表代码吗？", operation1);
             };
             $(function () {
                 var defaultColunms = GenTable.initColumn();
                 var table = new BSTable("GenTable", "/tool/gen/list", defaultColunms);
                 GenTable.table = table.init();
                 $(window).resize(function () {
-                    GenTable.table.resetSize(Feng.getHeight());
+//                    GenTable.table.resetSize(Feng.getHeight());
                 });
 
             });
