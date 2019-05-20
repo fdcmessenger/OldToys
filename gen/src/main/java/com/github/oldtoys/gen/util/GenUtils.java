@@ -118,7 +118,8 @@ public class GenUtils {
         if ("true".equals(autoRemovePre) && StringUtils.isNotEmpty(tablePrefix)) {
             tableName = tableName.replaceFirst(tablePrefix, "");
         }
-        return StringUtils.toCamelCase(tableName);
+        tableName = StringUtils.toCamelCase(tableName);
+        return StringUtils.capitalize(tableName);
     }
 
     /**

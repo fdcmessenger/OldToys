@@ -1,6 +1,6 @@
 package ${package}.domain;
 
-import com.ruoyi.system.constant.CmsBaseEntity;
+import com.gitee.fdc.base.entity.BaseEntity;
 import javax.persistence.Table;
 import lombok.Data;
 #foreach ($column in $columns)
@@ -15,7 +15,13 @@ import java.math.BigDecimal;
 #break
 #end
 #end
-
+import javax.persistence.Id;
+#if($primaryKey.attrType == 'String')
+import tk.mybatis.mapper.annotation.KeySql;
+import com.gitee.fdc.base.entity.UUIDGenId;
+#else
+import javax.persistence.GeneratedValue;
+#end
 /**
  * ${tableComment}表 ${tableName}
  * 
@@ -24,9 +30,17 @@ import java.math.BigDecimal;
  */
 @Data
 @Table(name = "${tableName}")
-public class ${className} extends CmsBaseEntity
+public class ${className} extends BaseEntity<${primaryKey.attrType}>
 {
 	private static final long serialVersionUID = 1L;
+
+        @Id
+#if($primaryKey.attrType == 'String')
+  @KeySql(genId = UUIDGenId.class)
+#else
+   @GeneratedValue(generator = "JDBC")
+#end
+	private $primaryKey.attrType $primaryKey.attrname;
 	
 #foreach ($column in $columns)
 #if($column.attrname != 'createBy' && $column.attrname != 'createTime' && $column.attrname != 'updateBy' && $column.attrname != 'updateTime'&& $column.attrname != 'id'&& $column.attrname != 'delFlag')

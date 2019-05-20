@@ -12,7 +12,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @Controller
 @MapperScan(basePackages = {
-    "com.github.oldtoys.gen.mapper.**"
+    "com.github.oldtoys.gen.mapper.**",
+    "com.github.oldtoys.demo.mapper.**"
 })
 public class GenApplication {
 
