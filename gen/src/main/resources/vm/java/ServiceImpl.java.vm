@@ -16,10 +16,9 @@ import javax.annotation.PostConstruct;
  * @date ${datetime}
  */
 @Service
-public class ${className}ServiceImpl extends BaseServiceImple<${className}, String> implements I${className}Service 
-{
-	@Autowired
-	private ${className}Mapper ${classname}Mapper;
+public class ${className}ServiceImpl extends BaseServiceImple<${className}, String> implements I${className}Service {
+    @Autowired
+    private ${className}Mapper ${classname}Mapper;
 
     @PostConstruct
     public void init() {
@@ -27,16 +26,14 @@ public class ${className}ServiceImpl extends BaseServiceImple<${className}, Stri
     }
 
 	
-	/**
+    /**
      * 查询${tableComment}列表
      * 
      * @param ${classname} ${tableComment}信息
      * @return ${tableComment}集合
      */
-	@Override
-	public List<${className}> select${className}List(${className} ${classname})
-	{
-	    return ${classname}Mapper.select${className}List(${classname});
-	}
-	
+    @Override
+    public List<${className}> select${className}List(${className} ${classname}){
+	return ${classname}Mapper.select${className}List(${classname});
+    }
 }

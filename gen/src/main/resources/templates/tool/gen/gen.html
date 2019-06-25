@@ -3,12 +3,12 @@
     <head>
         <th:block th:include="include :: head('代码方案管理')" />
         <!--<link th:href="@{/static/oldtoys/css/ry-ui.css}" rel="stylesheet"/>-->
-        <link th:href="@{/static/oldtoys/css/oldtoys.css}" rel="stylesheet"/>
+        <!--<link th:href="@{/static/oldtoys/css/oldtoys.css}" rel="stylesheet"/>-->
     </head>
     <body class="gray-bg">
         <div class="container-div">
             <div class="row">
-                <div class="col-sm-12 search-collapse">
+<!--                <div class="col-sm-12 search-collapse">
                     <form id="gen-form">
                         <div class="select-list">
                             <ul>
@@ -25,18 +25,18 @@
                                     <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
                                 </li>
                                 <li>
-                                    <a class="btn btn-primary btn-rounded btn-sm" onclick="GenTable.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
-                                    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                    <a class="btn btn-primary btn-rounded btn-sm" onclick="GenTable.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                    <a class="btn btn-warning btn-rounded btn-sm" onclick=" $('#gen-form')[0].reset();"><i class="fa fa-refresh"></i>&nbsp;重置</a>
                                 </li>
                             </ul>
                         </div>
                     </form>
-                </div>
+                </div>-->
 
                 <div class="btn-group-sm" id="GenTableToolbar" role="group">
-                    <a class="btn btn-success" onclick="javascript:batchGenCode()" shiro:hasPermission="tool:gen:code">
+<!--                    <a class="btn btn-success" onclick="javascript:batchGenCode()" shiro:hasPermission="tool:gen:code">
                         <i class="fa fa-download"></i> 批量生成
-                    </a>
+                    </a>-->
                 </div>
 
                 <div class="col-sm-12 select-table table-striped">
@@ -45,15 +45,23 @@
             </div>
         </div>
         <th:block th:include="include :: footer" />
-        <script th:src="@{/static/oldtoys/js/bootstrap-table-object.js}"></script>
-        <script th:src="@{/static/oldtoys/js/oldtoys.js}"></script>
+        <!--        <script th:src="@{/static/oldtoys/js/bootstrap-table-object.js}"></script>
+                <script th:src="@{/static/oldtoys/js/oldtoys.js}"></script>-->
         <script type="text/javascript">
+            var profix="/tool/gen";
             var GenTable = {
                 id: "GenTable", //表格id
-                seItem: null, //选中的条目
-                table: null,
                 dbTableName: null,
-                layerIndex: -1
+                layerIndex: -1,
+                funProps: {
+                    profixTitle: "单表样例",
+                    url: profix + "/list",
+//                    fullTextUrl: profix + "/fullTextList",
+//                    addUrl: profix + "/add",
+//                    editUrl: profix + "/edit/",
+//                    delUrl: profix + "/delete",
+//                    unDelUrl: profix + "/undelete",
+                },
             };
             /**
              * 初始化表格的列
@@ -76,18 +84,18 @@
                 return columns;
             };
 
-            GenTable.resetSearch = function () {
-                GenTable.search();
-            };
-
-            GenTable.search = function () {
-                var queryData = {};
-                GenTable.table.refresh({query: queryData});
-            };
+//            GenTable.resetSearch = function () {
+//                GenTable.search();
+//            };
+//
+//            GenTable.search = function () {
+//                var queryData = {};
+//                GenTable.table.refresh({query: queryData});
+//            };
 
             // 生成代码
             function genCode(tableName) {
-                $.modal.confirm("确定要生成" + tableName + "表代码吗？", function () {
+                layer.confirm("确定要生成" + tableName + "表代码吗？", function () {
                     location.href = prefix + "/genCode/" + tableName;
                     layer.msg('执行成功,正在生成代码请稍后…', {icon: 1});
                 })
@@ -106,15 +114,21 @@
                 var operation1 = function () {
                     location.href = "/tool/gen/genCode/" + tableName;
                 };
-                $.msgs.confirm("确定要生成" + tableName + "表代码吗？", operation1);
+                layer.confirm("确定要生成" + tableName + "表代码吗？", operation1);
             };
             $(function () {
-                var defaultColunms = GenTable.initColumn();
-                var table = new BSTable("GenTable", "/tool/gen/list", defaultColunms);
-                GenTable.table = table.init();
-                $(window).resize(function () {
-//                    GenTable.table.resetSize(Feng.getHeight());
-                });
+                var table = new BTable(GenTable.id, GenTable.initColumn(), GenTable.options);
+                GenTable.table = table.init(GenTable.funProps);
+//                
+//                
+//                
+//                
+//                var defaultColunms = GenTable.initColumn();
+//                var table = new BSTable("GenTable", "/tool/gen/list", defaultColunms);
+//                GenTable.table = table.init();
+//                $(window).resize(function () {
+////                    GenTable.table.resetSize(Feng.getHeight());
+//                });
 
             });
 

@@ -1,6 +1,5 @@
 package com.github.oldtoys.gen.service.impl;
 
-import com.gitee.fdc.base.service.BaseServiceImple;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -24,7 +23,6 @@ import com.github.oldtoys.gen.mapper.GenMapper;
 import com.github.oldtoys.gen.service.IGenService;
 import com.github.oldtoys.gen.util.GenUtils;
 import com.github.oldtoys.gen.util.VelocityInitializer;
-import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 
 /**

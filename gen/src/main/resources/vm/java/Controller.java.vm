@@ -1,23 +1,26 @@
 package ${basePackage}.web.controller.${moduleName};
 
 import java.util.List;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.enums.BusinessType;
+import com.gitee.fdc.adminui.demo.domain.DemoSingleTable;
+import com.gitee.fdc.adminui.demo.domain.DemoSingleTableSVO;
+import com.gitee.fdc.adminui.demo.service.IDemoSingleTableService;
+import com.gitee.fdc.web.ajax.Result;
+import com.gitee.fdc.web.ajax.ResultGenerator;
+import com.gitee.fdc.web.page.PageInfoBT;
+import com.gitee.fdc.web.page.PageKit;
+import com.gitee.fdc.web.page.PageReq;
+import lombok.extern.slf4j.Slf4j;
 import ${package}.domain.${className};
 import ${package}.service.I${className}Service;
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.page.TableDataInfo;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.utils.poi.ExcelUtil;
 
 /**
  * ${tableComment} 信息操作处理
@@ -25,115 +28,89 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
  * @author ${author}
  * @date ${datetime}
  */
+@Slf4j
 @Controller
 @RequestMapping("/${moduleName}/${classname}")
-public class ${className}Controller extends BaseController
-{
+public class ${className}Controller extends BaseController{
     private String prefix = "${moduleName}/${classname}";
 	
-	@Autowired
-	private I${className}Service ${classname}Service;
+    @Autowired
+    private I${className}Service ${classname}Service;
 	
-	@RequiresPermissions("${moduleName}:${classname}:view")
-	@GetMapping()
-	public String ${classname}()
-	{
-	    return prefix + "/${classname}";
-	}
-	
-	/**
-	 * 查询${tableComment}列表
-	 */
-	@RequiresPermissions("${moduleName}:${classname}:list")
-	@PostMapping("/list")
-	@ResponseBody
-	public TableDataInfo list(${className} ${classname})
-	{
-		startPage();
-        List<${className}> list = ${classname}Service.select${className}List(${classname});
-		return getDataTable(list);
-	}
-	
-	
-	/**
-	 * 导出${tableComment}列表
-	 */
-	@RequiresPermissions("${moduleName}:${classname}:export")
-    @PostMapping("/export")
-    @ResponseBody
-    public AjaxResult export(${className} ${classname})
-    {
-    	List<${className}> list = ${classname}Service.select${className}List(${classname});
-        ExcelUtil<${className}> util = new ExcelUtil<${className}>(${className}.class);
-        return util.exportExcel(list, "${classname}");
+    @GetMapping()
+    public String ${classname}(){
+        return prefix + "/${classname}";
     }
 	
-	/**
-	 * 新增${tableComment}
-	 */
-	@GetMapping("/add")
-	public String add()
-	{
-	    return prefix + "/add";
-	}
-	
-	/**
-	 * 新增保存${tableComment}
-	 */
-	@RequiresPermissions("${moduleName}:${classname}:add")
-	@Log(title = "${tableComment}", businessType = BusinessType.INSERT)
-	@PostMapping("/add")
-	@ResponseBody
-	public AjaxResult addSave(${className} ${classname})
-	{		
-		return toAjax(${classname}Service.save(${classname}));
-	}
+    /**
+     * 查询${tableComment}列表
+     */
+    @PostMapping("/list")
+    @ResponseBody
+    public PageInfoBT list(${className} ${classname}){
+        List<${className}> list = ${classname}Service.select${className}List(${classname});
+        return new PageInfoBT(list);
+    }
 
-	/**
-	 * 修改${tableComment}
-	 */
-	@GetMapping("/edit/{${primaryKey.attrname}}")
-	public String edit(@PathVariable("${primaryKey.attrname}") ${primaryKey.attrType} ${primaryKey.attrname}, ModelMap mmap)
-	{
-		${className} ${classname} = ${classname}Service.findById(${primaryKey.attrname});
-		mmap.put("${classname}", ${classname});
-	    return prefix + "/edit";
-	}
+    /**
+     * 新增${tableComment}
+     */
+    @GetMapping("/add")
+    public String add(ModelMap mmap){
+        ${className} ${classname} = new ${className}();
+        mmap.put("${classname}", ${classname});
+        return prefix + "/form";
+    }
 	
-	/**
-	 * 修改保存${tableComment}
-	 */
-	@RequiresPermissions("${moduleName}:${classname}:edit")
-	@Log(title = "${tableComment}", businessType = BusinessType.UPDATE)
-	@PostMapping("/edit")
-	@ResponseBody
-	public AjaxResult editSave(${className} ${classname})
-	{		
-		return toAjax(${classname}Service.save(${classname}));
-	}
+    /**
+     * 新增保存${tableComment}
+     */
+    @PostMapping("/add")
+    @ResponseBody
+    public Result addSave(${className} ${classname}){		
+        int rs = ${classname}Service.save(${classname});
+        Result rt = rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("保存失败");
+        return rt;
+    }
+
+    /**
+     * 修改${tableComment}
+     */
+    @GetMapping("/edit/{${primaryKey.attrname}}")
+    public String edit(@PathVariable("${primaryKey.attrname}") ${primaryKey.attrType} ${primaryKey.attrname}, ModelMap mmap){
+	${className} ${classname} = ${classname}Service.findById(${primaryKey.attrname});
+	mmap.put("${classname}", ${classname});
+        return prefix + "/form";
+    }
 	
-	/**
-	 * 删除${tableComment}
-	 */
-	@RequiresPermissions("${moduleName}:${classname}:remove")
-	@Log(title = "${tableComment}", businessType = BusinessType.DELETE)
-	@PostMapping( "/remove")
-	@ResponseBody
-	public AjaxResult remove(String id)
-	{		
-		return toAjax(${classname}Service.deleteById(id));
-	}
-	    /**
+    /**
+     * 修改保存${tableComment}
+     */
+    @PostMapping("/edit")
+    @ResponseBody
+    public Result editSave(${className} ${classname}){		
+        int rs = ${classname}Service.save(${classname});
+        Result rt = rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("保存失败");
+        return rt;
+
+    }
+	
+    /**
+     * 删除${tableComment}
+     */
+    @PostMapping( "/delete")
+    @ResponseBody
+    public Result remove(@RequestParam String ids){		
+        int rs = ${classname}Service.deleteByIds(ids);
+        return rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("删除失败");
+    }
+    /**
      * 恢复${tableComment}
      */
-    @RequiresPermissions("${moduleName}:${classname}:undelete")
-    @Log(title = "${tableComment}", businessType = BusinessType.UNDELETE)
     @PostMapping("/undelete")
     @ResponseBody
-    public AjaxResult unDelete(String id) {        
-        ${className} ${classname} = new CmsArticleCategory();
-        ${classname}.setId(id);
-        ${classname}.setDelFlag(0);
-        return toAjax(${classname}Service.unDeleteById(ids));
+    public Result unDelete(@RequestParam ${primaryKey.attrType} ${primaryKey.attrname}) {        
+      int rs = ${classname}Service.unDeleteById(id);
+      return rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("恢复失败");
     }
 }

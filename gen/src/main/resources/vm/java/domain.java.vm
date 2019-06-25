@@ -3,6 +3,7 @@ package ${package}.domain;
 import com.gitee.fdc.base.entity.BaseEntity;
 import javax.persistence.Table;
 import lombok.Data;
+import com.gitee.fdc.kits.StringUtils;
 #foreach ($column in $columns)
 #if($column.attrType == 'Date' && ($column.attrname != 'createBy' && $column.attrname != 'createTime' && $column.attrname != 'updateBy' && $column.attrname != 'updateTime' && $column.attrname != 'id'&& $column.attrname != 'delFlag'))
 import java.util.Date;
@@ -30,23 +31,28 @@ import javax.persistence.GeneratedValue;
  */
 @Data
 @Table(name = "${tableName}")
-public class ${className} extends BaseEntity<${primaryKey.attrType}>
-{
-	private static final long serialVersionUID = 1L;
+public class ${className} extends BaseEntity<${primaryKey.attrType}>{
+     /**@TODO 如需要，请自行重新生成 */
+    private static final long serialVersionUID = 1L;
 
-        @Id
+    @Id
 #if($primaryKey.attrType == 'String')
-  @KeySql(genId = UUIDGenId.class)
+    @KeySql(genId = UUIDGenId.class)
 #else
-   @GeneratedValue(generator = "JDBC")
+    @GeneratedValue(generator = "JDBC")
 #end
-	private $primaryKey.attrType $primaryKey.attrname;
+    private $primaryKey.attrType $primaryKey.attrname;
 	
 #foreach ($column in $columns)
 #if($column.attrname != 'createBy' && $column.attrname != 'createTime' && $column.attrname != 'updateBy' && $column.attrname != 'updateTime'&& $column.attrname != 'id'&& $column.attrname != 'delFlag')
-	/** $column.columnComment */
-	private $column.attrType $column.attrname;
+    /** $column.columnComment */
+    private $column.attrType $column.attrname;
 #end
 #end
-
+    /**  这是个参考样例，以逗号分隔的字符串数据
+    public String[] getMultiSelectFieldArray() {
+        String[] sa = StringUtils.split(multiSelectField, ",");
+        return sa == null ? new String[0] : sa;
+    }
+     */
 }
