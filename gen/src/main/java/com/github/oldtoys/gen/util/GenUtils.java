@@ -26,6 +26,7 @@ public class GenUtils {
      * 项目空间路径
      */
     private static final String PROJECT_PATH = getProjectPath();
+    private static final String PROJECT_TEST_PATH = getProjectTestPath();
 
     /**
      * mybatis空间路径
@@ -97,15 +98,17 @@ public class GenUtils {
         List<String> templates = new ArrayList<String>();
         templates.add("vm/java/domain.java.vm");
         templates.add("vm/java/Mapper.java.vm");
-        templates.add("vm/java/MapperJunit.java.vm");
         templates.add("vm/java/Service.java.vm");
         templates.add("vm/java/ServiceImpl.java.vm");
         templates.add("vm/java/Controller.java.vm");
         templates.add("vm/xml/Mapper.xml.vm");
         templates.add("vm/html/list.html.vm");
-        templates.add("vm/html/add.html.vm");
-        templates.add("vm/html/edit.html.vm");
+        templates.add("vm/html/from.html.vm");
+//        templates.add("vm/html/edit.html.vm");
+        templates.add("vm/test/MapperJunit.java.vm");
+        templates.add("vm/test/ServiceJunit.java.vm");
         templates.add("vm/sql/sql.vm");
+        templates.add("vm/json/menu.json.vm");
         return templates;
     }
 
@@ -131,6 +134,7 @@ public class GenUtils {
         // 大写类名
         String className = table.getClassName();
         String javaPath = PROJECT_PATH;
+        String javaTestPath = PROJECT_TEST_PATH;
         String mybatisPath = MYBATIS_PATH + "/" + moduleName + "/" + className;
         String htmlPath = TEMPLATES_PATH + "/" + moduleName + "/" + classname;
 
@@ -142,11 +146,14 @@ public class GenUtils {
             return javaPath + "mapper" + "/" + className + "Mapper.java";
         }
         if (template.contains("MapperJunit.java.vm")) {
-            return javaPath + "mapper" + "/" + className + "MapperTest.java";
+            return javaTestPath + "mapper" + "/" + className + "MapperTest.java";
         }
 
         if (template.contains("Service.java.vm")) {
             return javaPath + "service" + "/" + "I" + className + "Service.java";
+        }
+        if (template.contains("ServiceJunit.java.vm")) {
+            return javaTestPath + "service" + "/" + "I" + className + "ServiceTest.java";
         }
 
         if (template.contains("ServiceImpl.java.vm")) {
@@ -164,14 +171,17 @@ public class GenUtils {
         if (template.contains("list.html.vm")) {
             return htmlPath + "/" + classname + ".html";
         }
-        if (template.contains("add.html.vm")) {
-            return htmlPath + "/" + "add.html";
+        if (template.contains("form.html.vm")) {
+            return htmlPath + "/" + "form.html";
         }
-        if (template.contains("edit.html.vm")) {
-            return htmlPath + "/" + "edit.html";
-        }
+//        if (template.contains("edit.html.vm")) {
+//            return htmlPath + "/" + "edit.html";
+//        }
         if (template.contains("sql.vm")) {
             return classname + "Menu.sql";
+        }
+        if (template.contains("menu.json.vm")) {
+            return classname + "menu.json";
         }
         return null;
     }
@@ -199,6 +209,14 @@ public class GenUtils {
         String packageName = GenConfig.getPackageName();
         StringBuffer projectPath = new StringBuffer();
         projectPath.append("main/java/");
+        projectPath.append(packageName.replace(".", "/"));
+        projectPath.append("/");
+        return projectPath.toString();
+    }
+    public static String getProjectTestPath() {
+        String packageName = GenConfig.getPackageName();
+        StringBuffer projectPath = new StringBuffer();
+        projectPath.append("test/java/");
         projectPath.append(packageName.replace(".", "/"));
         projectPath.append("/");
         return projectPath.toString();

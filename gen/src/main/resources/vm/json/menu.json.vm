@@ -1,0 +1,13 @@
+{
+    "menus": [{
+            "menu": "${tableComment}管理",
+            "icon": "laptop",
+            "items": [{
+                    "name": "${tableComment}列表",
+                    "url": "${moduleName}/${classname}",
+                     "icon": "fas fa-swimmer"
+                }
+            ]
+        }
+    ]
+}

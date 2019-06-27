@@ -63,17 +63,6 @@ public class ${className}Controller extends BaseController{
     }
 	
     /**
-     * 新增保存${tableComment}
-     */
-    @PostMapping("/add")
-    @ResponseBody
-    public Result addSave(${className} ${classname}){		
-        int rs = ${classname}Service.save(${classname});
-        Result rt = rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("保存失败");
-        return rt;
-    }
-
-    /**
      * 修改${tableComment}
      */
     @GetMapping("/edit/{${primaryKey.attrname}}")
@@ -86,13 +75,12 @@ public class ${className}Controller extends BaseController{
     /**
      * 修改保存${tableComment}
      */
-    @PostMapping("/edit")
+    @PostMapping("/save")
     @ResponseBody
-    public Result editSave(${className} ${classname}){		
+    public Result save(${className} ${classname}){		
         int rs = ${classname}Service.save(${classname});
         Result rt = rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("保存失败");
         return rt;
-
     }
 	
     /**
