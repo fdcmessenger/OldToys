@@ -103,7 +103,7 @@ public class GenUtils {
         templates.add("vm/java/Controller.java.vm");
         templates.add("vm/xml/Mapper.xml.vm");
         templates.add("vm/html/list.html.vm");
-        templates.add("vm/html/from.html.vm");
+        templates.add("vm/html/form.html.vm");
 //        templates.add("vm/html/edit.html.vm");
         templates.add("vm/test/MapperJunit.java.vm");
         templates.add("vm/test/ServiceJunit.java.vm");
