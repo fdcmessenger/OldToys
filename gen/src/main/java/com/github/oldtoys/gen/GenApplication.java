@@ -4,8 +4,8 @@ package com.github.oldtoys.gen;
 import java.util.Map;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import tk.mybatis.spring.annotation.MapperScan;
 
@@ -15,6 +15,7 @@ import tk.mybatis.spring.annotation.MapperScan;
     "com.github.oldtoys.gen.mapper.**",
     "com.github.oldtoys.demo.mapper.**"
 })
+@ComponentScan(basePackages = {"com.gitee.fdc","com.github.oldtoys.gen","com.github.oldtoys.demo"})
 public class GenApplication {
 
     public static void main(String[] args) {
@@ -27,8 +28,8 @@ public class GenApplication {
         
     }
 
-    @RequestMapping("/demo/{mapping}")
-    public String subOthers(@PathVariable String mapping) {
-        return "demo/" + mapping;
-    }
+//    @RequestMapping("/demo/{mapping}")
+//    public String subOthers(@PathVariable String mapping) {
+//        return "demo/" + mapping;
+//    }
 }

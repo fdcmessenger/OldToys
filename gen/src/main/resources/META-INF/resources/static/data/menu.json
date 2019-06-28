@@ -10,6 +10,16 @@
                 }
 
             ]
+        },
+        {
+            "menu": "单样例管理",
+            "icon": "laptop",
+            "items": [{
+                    "name": "单样例列表",
+                    "url": "demo/demoSingleTable",
+                     "icon": "fas fa-swimmer"
+                }
+            ]
         }
     ]
 }

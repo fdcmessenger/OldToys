@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
  * @date ${datetime}
  */
 @Service
-public class ${className}ServiceImpl extends BaseServiceImple<${className}, String> implements I${className}Service {
+public class ${className}ServiceImpl extends BaseServiceImple<${className}, $primaryKey.attrType> implements I${className}Service {
     @Autowired
     private ${className}Mapper ${classname}Mapper;
 
@@ -34,6 +34,7 @@ public class ${className}ServiceImpl extends BaseServiceImple<${className}, Stri
      */
     @Override
     public List<${className}> select${className}List(${className} ${classname}){
+        this.pageAble();
 	return ${classname}Mapper.select${className}List(${classname});
     }
 }

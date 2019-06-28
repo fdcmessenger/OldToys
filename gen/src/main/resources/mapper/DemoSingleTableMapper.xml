@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.oldtoys.demo.mapper.DemoSingleTableMapper">
+    
+    <resultMap type="com.github.oldtoys.demo.domain.DemoSingleTable" id="DemoSingleTableResult">
+        <result property="id"    column="id"    />
+        <result property="intField"    column="int_field"    />
+        <result property="varcharField"    column="varchar_field"    />
+        <result property="dateField"    column="date_field"    />
+        <result property="selectDictField"    column="select_dict_field"    />
+        <result property="multiSelectField"    column="multi_select_field"    />
+        <result property="checkDictField"    column="check_dict_field"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="redioDictField"    column="redio_dict_field"    />
+        <result property="lastModifyTimestamp"    column="last_modify_timestamp"    />
+    </resultMap>
+	
+    <sql id="selectDemoSingleTableVo">
+        select id, int_field, varchar_field, date_field, select_dict_field, multi_select_field, check_dict_field, del_flag, redio_dict_field, last_modify_timestamp from demo_single_table
+    </sql>
+	
+    <select id="selectDemoSingleTableList" parameterType="com.github.oldtoys.demo.domain.DemoSingleTable" resultMap="DemoSingleTableResult">
+        <include refid="selectDemoSingleTableVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="intField != null "> and int_field = #{intField}</if>
+            <if test="varcharField != null  and varcharField != '' "> and varchar_field = #{varcharField}</if>
+            <if test="dateField != null "> and date_field = #{dateField}</if>
+            <if test="selectDictField != null  and selectDictField != '' "> and select_dict_field = #{selectDictField}</if>
+            <if test="multiSelectField != null  and multiSelectField != '' "> and multi_select_field = #{multiSelectField}</if>
+            <if test="checkDictField != null  and checkDictField != '' "> and check_dict_field = #{checkDictField}</if>
+            <if test="delFlag != null "> and del_flag = #{delFlag}</if>
+            <if test="redioDictField != null  and redioDictField != '' "> and redio_dict_field = #{redioDictField}</if>
+            <!--<if test="lastModifyTimestamp != null "> and last_modify_timestamp = #{lastModifyTimestamp}</if>-->
+        </where>
+    </select>
+   
+    
+</mapper>

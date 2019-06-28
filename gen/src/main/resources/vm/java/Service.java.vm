@@ -2,6 +2,7 @@ package ${package}.service;
 
 import ${package}.domain.${className};
 import com.gitee.fdc.base.service.BaseService;
+import com.gitee.fdc.base.service.DeleteLogicService;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @author ${author}
  * @date ${datetime}
  */
-public interface I${className}Service extends DeleteLogicService<${className},String> 
+public interface I${className}Service extends DeleteLogicService<${className},$primaryKey.attrType> 
 {
 
     /**

@@ -1,4 +1,4 @@
-package ${package}.mapper;
+package ${package}.service;
 
 import java.util.List;
 import org.junit.Assert;
@@ -25,7 +25,7 @@ public class ${className}ServiceTest {
 
     @Test
     public void testSelectAll() {
-        List l = service.selectAll();
+        List l = service.findAll();
         Assert.assertNotNull(l);
     }
 

@@ -1,6 +1,5 @@
 package com.github.oldtoys.demo.service;
 
-import com.github.oldtoys.gen.GenApplication;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,15 +10,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 单样例 数据层测试
- *
+ * 单样例 服务层测试
+ * 
  * @author Mr.fdc
- * @date 2019-05-20T08:56:53.535+08:00
+ * @date 2019-06-28T09:25:20.581+08:00
  */
 @Transactional(readOnly = false)
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = GenApplication.class)
-public class DemoSingleTableServiceTest {
+@SpringBootTest
+public class DemoSingleTableServiceTest { 	
 
     @Autowired
     IDemoSingleTableService service;

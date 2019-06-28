@@ -1,6 +1,10 @@
 server:
-    port: 8000
+    port: 8008
 spring:
+  jackson:
+#    property-naming-strategy: SNAKE_CASE
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8     
   thymeleaf:
     cache: false
   devtools:
@@ -12,7 +16,7 @@ spring:
       username: root
       password: root
 mybatis:
-#  type-aliases-package: cn.itchao.pojo
+#  type-aliases-package: com.github.oldtoys
   mapper-locations: classpath:mapper/*.xml 
 #  configuration: 
 #    map-underscore-to-camel-case: true  ##开启驼峰

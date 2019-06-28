@@ -178,10 +178,10 @@ public class GenUtils {
 //            return htmlPath + "/" + "edit.html";
 //        }
         if (template.contains("sql.vm")) {
-            return classname + "Menu.sql";
+            return classname + "_Menu.sql";
         }
         if (template.contains("menu.json.vm")) {
-            return classname + "menu.json";
+            return classname + "_menu.json";
         }
         return null;
     }

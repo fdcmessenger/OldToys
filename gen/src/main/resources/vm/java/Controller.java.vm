@@ -1,4 +1,4 @@
-package ${basePackage}.web.controller.${moduleName};
+package ${package}.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.gitee.fdc.adminui.demo.domain.DemoSingleTable;
-import com.gitee.fdc.adminui.demo.domain.DemoSingleTableSVO;
-import com.gitee.fdc.adminui.demo.service.IDemoSingleTableService;
 import com.gitee.fdc.web.ajax.Result;
 import com.gitee.fdc.web.ajax.ResultGenerator;
 import com.gitee.fdc.web.page.PageInfoBT;
-import com.gitee.fdc.web.page.PageKit;
-import com.gitee.fdc.web.page.PageReq;
 import lombok.extern.slf4j.Slf4j;
 import ${package}.domain.${className};
 import ${package}.service.I${className}Service;
@@ -31,7 +26,7 @@ import ${package}.service.I${className}Service;
 @Slf4j
 @Controller
 @RequestMapping("/${moduleName}/${classname}")
-public class ${className}Controller extends BaseController{
+public class ${className}Controller{
     private String prefix = "${moduleName}/${classname}";
 	
     @Autowired

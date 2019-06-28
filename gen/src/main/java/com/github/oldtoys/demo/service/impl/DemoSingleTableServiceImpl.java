@@ -11,32 +11,30 @@ import javax.annotation.PostConstruct;
 
 /**
  * 单样例 服务层实现
- * 
+ *
  * @author Mr.fdc
- * @date 2019-05-20T08:56:53.535+08:00
+ * @date 2019-06-28T09:01:26.332+08:00
  */
 @Service
-public class DemoSingleTableServiceImpl extends BaseServiceImple<DemoSingleTable, String> implements IDemoSingleTableService 
-{
-	@Autowired
-	private DemoSingleTableMapper demoSingleTableMapper;
+public class DemoSingleTableServiceImpl extends BaseServiceImple<DemoSingleTable, Long> implements IDemoSingleTableService {
+
+    @Autowired
+    private DemoSingleTableMapper demoSingleTableMapper;
 
     @PostConstruct
     public void init() {
         super.init(DemoSingleTable.class, demoSingleTableMapper);
     }
 
-	
-	/**
+    /**
      * 查询单样例列表
-     * 
+     *
      * @param demoSingleTable 单样例信息
      * @return 单样例集合
      */
-	@Override
-	public List<DemoSingleTable> selectDemoSingleTableList(DemoSingleTable demoSingleTable)
-	{
-	    return demoSingleTableMapper.selectDemoSingleTableList(demoSingleTable);
-	}
-	
+    @Override
+    public List<DemoSingleTable> selectDemoSingleTableList(DemoSingleTable demoSingleTable) {
+        this.pageAble();
+        return demoSingleTableMapper.selectDemoSingleTableList(demoSingleTable);
+    }
 }

@@ -43,16 +43,17 @@
         <div th:replace="include :: footer"></div>
     <script th:inline="javascript">
         var prefix = "/${moduleName}/${classname}";
+        var baseUrl=prefix + "/list";
         var ${className} = {
                 id: "table",
                 funProps: {
                     profixTitle: "${tableComment}",
-                    url: profix + "/list",
-                    fullTextUrl: profix + "/fullTextList",
-                    addUrl: profix + "/add",
-                    editUrl: profix + "/edit/",
-                    delUrl: profix + "/delete",
-                    unDelUrl: profix + "/undelete",
+                    url: baseUrl,
+                    fullTextUrl: prefix + "/fullTextList",
+                    addUrl: prefix + "/add",
+                    editUrl: prefix + "/edit/",
+                    delUrl: prefix + "/delete",
+                    unDelUrl: prefix + "/undelete",
                 },
                 initColumn: function () {
                     var columns = [
@@ -94,7 +95,7 @@
                 options: {
                     queryParams: function (params) {
                         var queryData = {};
-                        if (this.url === url)
+                        if (this.url === baseUrl)
                             $.each($("#searchForm").serializeArray(), function (i, field) {
                                 queryData[field.name] = field.value;
                             });

@@ -17,7 +17,7 @@
         </div>
 
         #else
-            #if(${column.configInfo.type} == "date")
+            #if(${column.attrType} == "Date")
         <div class="col form-group">
             <input type="text" id="${column.attrname}" name="${column.attrname}" th:field="*{${column.attrname}}" class="form-control time-input" placeholder="${column.columnComment}">
         </div>
