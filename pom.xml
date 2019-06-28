@@ -7,8 +7,8 @@
     <packaging>pom</packaging>
     <name>old toys parent</name>
     <modules>
-        <module>generator</module>
         <module>gen</module>
+        <module>OurWorld</module>
     </modules>
     <properties>
 

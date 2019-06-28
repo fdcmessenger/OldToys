@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: head('单样例列表')" />
+</head>
+<body>
+ <div id="searchArea" class="collapse in"  style="margin-top: 15px;">
+            <form id="searchForm">
+                <div class="form-row">
+                    <div class="col-auto">
+                        <input id="startTime" name="beginTime" type="text" class="form-control select-time" placeholder="开始时间">
+                    </div>
+                    <div class="col-auto">
+                        <input id="endTime" name="endTime" type="text" class="form-control select-time" placeholder="截止时间">
+                    </div>
+                    <div class="col-auto">
+                        <input name="searchTxt" type="text" class="form-control" placeholder="字符串字段">
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-primary mb-2" onclick="DemoSingleTable.table.search();"><i class="fas fa-eye"></i>查询</button>
+                        <button type="button" class="btn btn-info mb-2" onclick=" $('#searchForm')[0].reset();;"><i class="fas fa-broom"></i>清空</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+	 <div id="tableToolbar">
+            <div class="form-inline " role="form">
+                <button type="button" class="btn btn-outline-success"  data-toggle="tooltip"   title="新建" onclick="DemoSingleTable.table.add();"><i class="fas fa-file-alt"></i></button>
+                <button type="button" class="btn btn-outline-warning" data-toggle="tooltip"   title="修改"  onclick="DemoSingleTable.table.edit();"><i class="fas fa-pencil-alt "></i></button>
+                <button type="button" class="btn btn-outline-danger" data-toggle="tooltip"     title="删除" onclick="DemoSingleTable.table.delete();"><i class="fas fa-trash-alt "></i></button>
+
+                <div class="form-group">
+                    <input id="searchKeyWord" name="searchKeyWord" class="form-control" type="text" min="2" minlength="2" placeholder="全文检索">
+                </div>
+                <button  type="button" class="btn btn-outline-secondary"  data-toggle="tooltip"   title="查询" onclick="DemoSingleTable.table.fullTextSearch();"><i class="fas fa-search "></i></button>
+                <button id="searchMore"  type="button" class="btn btn-outline-danger"  data-toggle="tooltip" title="更多查询" onclick='$("#searchArea").collapse("toggle");'>
+                    <i class="fas fa-pastafarianism fa-1x" ></i>
+                </button>
+            </div>  
+        </div>
+        <table id="table">      </table>
+
+        <div th:replace="include :: footer"></div>
+    <script th:inline="javascript">
+        var prefix = "/demo/demoSingleTable";
+        var baseUrl=prefix + "/list";
+        var DemoSingleTable = {
+                id: "table",
+                funProps: {
+                    profixTitle: "单样例",
+                    url: baseUrl,
+                    fullTextUrl: prefix + "/fullTextList",
+                    addUrl: prefix + "/add",
+                    editUrl: prefix + "/edit/",
+                    delUrl: prefix + "/delete",
+                    unDelUrl: prefix + "/undelete",
+                },
+                initColumn: function () {
+                    var columns = [
+                        {checkbox: "true"},
+
+				{
+					field : 'id', 
+					title : '主键ID',
+					visible: false,
+                                        sortable: true
+                                        
+				},
+
+				{
+					field : 'intField', 
+					title : '整形字段',
+					sortable: true
+				},
+
+				{
+					field : 'varcharField', 
+					title : '字符串字段',
+					sortable: true
+				},
+
+				{
+					field : 'dateField', 
+					title : '日期字段',
+					sortable: true
+				},
+
+				{
+					field : 'selectDictField', 
+					title : '下拉字段',
+					sortable: true
+				},
+
+				{
+					field : 'multiSelectField', 
+					title : '下拉多选字段',
+					sortable: true
+				},
+
+				{
+					field : 'checkDictField', 
+					title : 'CHECK多选字段',
+					sortable: true
+				},
+
+				{
+					field : 'delFlag', 
+					title : '删除标志',
+					sortable: true
+				},
+
+				{
+					field : 'redioDictField', 
+					title : 'REDIO字段',
+					sortable: true
+				},
+
+				{
+					field : 'lastModifyTimestamp', 
+					title : '变化时间戳',
+					sortable: true
+				},
+
+
+
+
+                        {title: '操作', align: 'center',
+                            formatter: function (value, row, index) {
+                                var actions = [];
+                                actions.push('<a class="btn btn-success btn-xs " href="#"  title="修改"  onclick="DemoSingleTable.table.edit(\'' + row.id + '\')"><i class="fas fa-pencil-alt "></i></a> ');
+                                if (row.delFlag === 0)
+                                    actions.push('<a class="btn btn-danger btn-xs " href="#"  title="删除"  onclick="DemoSingleTable.table.delete(\'' + row.id + '\')"><i class="fas fa-trash-alt "></i></a> ');
+                                else
+                                    actions.push('<a class="btn btn-info btn-xs " href="#"  title="恢复"  onclick="DemoSingleTable.table.undelete(\'' + row.id + '\')"><i class="fas fa-undo "></i></a> ');
+                                return actions.join('');
+                            }}
+                    ];
+                    return columns;
+                },
+                options: {
+                    queryParams: function (params) {
+                        var queryData = {};
+                        if (this.url === baseUrl)
+                            $.each($("#searchForm").serializeArray(), function (i, field) {
+                                queryData[field.name] = field.value;
+                            });
+                        else
+                            queryData['keyWords'] = $('#searchKeyWord').val();
+                        params = $.extend(params, queryData);
+                        return params;
+                    }
+                }};
+
+            $(document).ready(function () {
+                var table = new BTable(DemoSingleTable.id, DemoSingleTable.initColumn(), DemoSingleTable.options);
+                DemoSingleTable.table = table.init(DemoSingleTable.funProps);
+            });
+    </script>
+</body>
+</html>
