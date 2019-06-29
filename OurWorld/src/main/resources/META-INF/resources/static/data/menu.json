@@ -1,0 +1,15 @@
+{
+
+    "menus": [
+        {
+            "menu": "大洲管理",
+            "icon": "laptop",
+            "items": [{
+                    "name": "大洲列表",
+                    "url": "/world/continent",
+                     "icon": "fas fa-swimmer"
+                }
+            ]
+        }
+    ]
+}

@@ -12,9 +12,9 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @Controller
 @MapperScan(basePackages = {
-    "com.github.oldtoys.ourworld.mapper.**"
+    "com.github.oldtoys.world.mapper.**"
 })
-@ComponentScan(basePackages = {"com.gitee.fdc", "com.github.oldtoys.ourworld"})
+@ComponentScan(basePackages = {"com.gitee.fdc", "com.github.oldtoys"})
 public class OurWorldApplication {
 
     public static void main(String[] args) {

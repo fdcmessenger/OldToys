@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.oldtoys.world.mapper.ContinentMapper">
+    
+    <resultMap type="com.github.oldtoys.world.domain.Continent" id="ContinentResult">
+        <result property="id"    column="id"    />
+        <result property="abbr"    column="abbr"    />
+        <result property="nameEn"    column="name_en"    />
+        <result property="nameCn"    column="name_cn"    />
+    </resultMap>
+	
+    <sql id="selectContinentVo">
+        select id, abbr, name_en, name_cn from ow_continent
+    </sql>
+	
+    <select id="selectContinentList" parameterType="com.github.oldtoys.world.domain.Continent" resultMap="ContinentResult">
+        <include refid="selectContinentVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="abbr != null  and abbr != '' "> and abbr = #{abbr}</if>
+            <if test="nameEn != null  and nameEn != '' "> and name_en = #{nameEn}</if>
+            <if test="nameCn != null  and nameCn != '' "> and name_cn = #{nameCn}</if>
+        </where>
+    </select>
+   
+    
+</mapper>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <head>
+    <th:block th:include="include :: head('大洲列表')" />
+</head>
+<body>
+    <div id="searchArea" class="collapse in"  style="margin-top: 15px;">
+        <form id="searchForm">
+            <div class="form-row">
+                <div class="col-auto">
+                    <input id="startTime" name="beginTime" type="text" class="form-control select-time" placeholder="开始时间">
+                </div>
+                <div class="col-auto">
+                    <input id="endTime" name="endTime" type="text" class="form-control select-time" placeholder="截止时间">
+                </div>
+                <div class="col-auto">
+                    <input name="searchTxt" type="text" class="form-control" placeholder="字符串字段">
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-primary mb-2" onclick="Continent.table.search();"><i class="fas fa-eye"></i>查询</button>
+                    <button type="button" class="btn btn-info mb-2" onclick=" $('#searchForm')[0].reset();;"><i class="fas fa-broom"></i>清空</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="tableToolbar">
+        <div class="form-inline " role="form">
+            <button type="button" class="btn btn-outline-success"  data-toggle="tooltip"   title="新建" onclick="Continent.table.add();"><i class="fas fa-file-alt"></i></button>
+            <button type="button" class="btn btn-outline-warning" data-toggle="tooltip"   title="修改"  onclick="Continent.table.edit();"><i class="fas fa-pencil-alt "></i></button>
+            <button type="button" class="btn btn-outline-danger" data-toggle="tooltip"     title="删除" onclick="Continent.table.delete();"><i class="fas fa-trash-alt "></i></button>
+
+            <div class="form-group">
+                <input id="searchKeyWord" name="searchKeyWord" class="form-control" type="text" min="2" minlength="2" placeholder="全文检索">
+            </div>
+            <button  type="button" class="btn btn-outline-secondary"  data-toggle="tooltip"   title="查询" onclick="Continent.table.fullTextSearch();"><i class="fas fa-search "></i></button>
+            <button id="searchMore"  type="button" class="btn btn-outline-danger"  data-toggle="tooltip" title="更多查询" onclick='$("#searchArea").collapse("toggle");'>
+                <i class="fas fa-pastafarianism fa-1x" ></i>
+            </button>
+        </div>  
+    </div>
+    <table id="table">      </table>
+
+    <div th:replace="include :: footer"></div>
+    <script th:inline="javascript">
+        var prefix = "/world/continent";
+        var baseUrl = prefix + "/list";
+        var Continent = {
+            id: "table",
+            funProps: {
+                profixTitle: "大洲",
+                url: baseUrl,
+                fullTextUrl: prefix + "/fullTextList",
+                addUrl: prefix + "/add",
+                editUrl: prefix + "/edit/",
+                delUrl: prefix + "/delete",
+                unDelUrl: prefix + "/undelete",
+            },
+            initColumn: function () {
+                var columns = [
+                    {checkbox: "true"},
+
+                    {
+                        field: 'id',
+                        title: '编号',
+                        visible: false
+                    },
+
+                    {
+                        field: 'abbr',
+                        title: '缩写',
+                        sortable: true
+                    },
+
+                    {
+                        field: 'nameEn',
+                        title: '英文名称',
+                        sortable: true
+                    },
+
+                    {
+                        field: 'nameCn',
+                        title: '中文名称',
+                        sortable: true
+                    },
+
+                    {title: '操作', align: 'center',
+                        formatter: function (value, row, index) {
+                            var actions = [];
+                            actions.push('<a class="btn btn-success btn-xs " href="#"  title="修改"  onclick="Continent.table.edit(\'' + row.id + '\')"><i class="fas fa-pencil-alt "></i></a> ');
+                            actions.push('<a class="btn btn-danger btn-xs " href="#"  title="删除"  onclick="Continent.table.delete(\'' + row.id + '\')"><i class="fas fa-trash-alt "></i></a> ');
+                            return actions.join('');
+                        }}
+                ];
+                return columns;
+            },
+            options: {
+                queryParams: function (params) {
+                    var queryData = {};
+                    if (this.url === baseUrl)
+                        $.each($("#searchForm").serializeArray(), function (i, field) {
+                            queryData[field.name] = field.value;
+                        });
+                    else
+                        queryData['keyWords'] = $('#searchKeyWord').val();
+                    params = $.extend(params, queryData);
+                    return params;
+                }
+            }};
+
+        $(document).ready(function () {
+            var table = new BTable(Continent.id, Continent.initColumn(), Continent.options);
+            Continent.table = table.init(Continent.funProps);
+        });
+    </script>
+</body>
+</html>

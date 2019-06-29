@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+    <th:block th:include="include :: head('大洲')" />
+</head>
+<body>
+
+    <form id="continentForm" novalidate=true th:object="${continent}">
+        <input id="id" name="id" th:field="*{id}"  type="hidden">
+        <div class="form-row">
+            <div class="col form-group">
+                <input type="text" id="abbr" name="abbr" th:field="*{abbr}" class="form-control" placeholder="缩写">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col form-group">
+                <input type="text" id="nameEn" name="nameEn" th:field="*{nameEn}" class="form-control" placeholder="英文名称">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col form-group">
+                <input type="text" id="nameCn" name="nameCn" th:field="*{nameCn}" class="form-control" placeholder="中文名称">
+            </div>
+        </div>
+    </form>
+    <div th:replace="include :: footer"></div>
+    <script type="text/javascript">
+        var prefix = "/world/continent";
+        $("#continentForm").validate({
+            rules: {
+                abbr: {
+                    required: true
+                },
+                nameEn: {
+                    required: true
+                },
+                nameCn: {
+                    required: true
+                }
+            }
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                var data = $("#continentForm").serializeArray();
+                $.operation.saveModal(prefix + "/save", data, function () {
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭  
+                    parent.Continent.table.refresh();
+                });
+            }
+        }
+    </script>
+</body>
+</html>
