@@ -1,14 +1,4 @@
-Some Codes from ISO 3166-1 
-
-Updated by the RIPE Network Coordination Centre.
-
-Source: ISO 3166 Maintenance Agency 
-
-Latest change: March 15 2019
-
-Country 					A 2 	A 3 	Number
-----------------------------------------------------------------------
-
+Country 					A2 	A3 	Number
 AFGHANISTAN 					AF 	AFG 	004
 ÅLAND ISLANDS                                   AX      ALA     248
 ALBANIA 					AL 	ALB 	008
