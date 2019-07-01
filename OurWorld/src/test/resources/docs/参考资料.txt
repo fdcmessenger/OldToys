@@ -1,0 +1,4 @@
+world population review:http://worldpopulationreview.com/
+联合国人口首页：https://population.un.org/wpp/
+联合国M49国家地区标准：https://unstats.un.org/unsd/methodology/m49/
+国家地区电话区号(iso-alpha-2)：https://www.etoolsage.com/Query/CountryInfo.asp
