@@ -14,7 +14,7 @@ spring:
   datasource:
       url: jdbc:mysql://127.0.0.1:3306/oldtoys?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
       username: root
-      password: 123456
+      password: root
 mybatis:
 #  type-aliases-package: com.github.oldtoys
   mapper-locations: classpath:mapper/*.xml 
