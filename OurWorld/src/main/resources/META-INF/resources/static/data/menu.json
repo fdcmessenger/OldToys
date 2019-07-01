@@ -1,13 +1,32 @@
 {
-
     "menus": [
+        {
+            "menu": "区域类型管理",
+            "icon": "laptop",
+            "items": [{
+                    "name": "区域类型列表",
+                    "url": "world/geoType",
+                    "icon": "fas fa-swimmer"
+                }
+            ]
+        },
+        {
+            "menu": "世界区域管理",
+            "icon": "laptop",
+            "items": [{
+                    "name": "世界区域列表",
+                    "url": "world/geoRegions",
+                    "icon": "fas fa-swimmer"
+                }
+            ]
+        },
         {
             "menu": "大洲管理",
             "icon": "laptop",
             "items": [{
                     "name": "大洲列表",
                     "url": "/world/continent",
-                     "icon": "fas fa-swimmer"
+                    "icon": "fas fa-swimmer"
                 }
             ]
         }

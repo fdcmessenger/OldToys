@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.oldtoys.world.mapper.GeoTypeMapper">
+    
+    <resultMap type="com.github.oldtoys.world.domain.GeoType" id="GeoTypeResult">
+                <result property="id"    column="id"    />
+                <result property="typeNameEn"    column="type_name_en"    />
+                <result property="typeNameCn"    column="type_name_cn"    />
+                <result property="remarks"    column="remarks"    />
+            </resultMap>
+	
+    <sql id="selectGeoTypeVo">
+        select id, type_name_en, type_name_cn, remarks from ow_geo_type
+    </sql>
+	
+    <select id="selectGeoTypeList" parameterType="com.github.oldtoys.world.domain.GeoType" resultMap="GeoTypeResult">
+        <include refid="selectGeoTypeVo"/>
+        <where>  
+                        <if test="id != null "> and id = #{id}</if>
+                        <if test="typeNameEn != null  and typeNameEn != '' "> and type_name_en = #{typeNameEn}</if>
+                        <if test="typeNameCn != null  and typeNameCn != '' "> and type_name_cn = #{typeNameCn}</if>
+                        <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+                    </where>
+    </select>
+   
+    
+</mapper>
