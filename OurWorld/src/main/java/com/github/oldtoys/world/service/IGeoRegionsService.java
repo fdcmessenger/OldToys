@@ -3,6 +3,7 @@ package com.github.oldtoys.world.service;
 import com.github.oldtoys.world.domain.GeoRegions;
 import com.gitee.fdc.base.service.BaseService;
 import com.gitee.fdc.base.service.DeleteLogicService;
+import com.github.oldtoys.world.vo.RegionSVO;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public interface IGeoRegionsService extends DeleteLogicService<GeoRegions,Intege
      * @param geoRegions 世界区域信息
      * @return 世界区域集合
      */
-    public List<GeoRegions> selectGeoRegionsList(GeoRegions geoRegions);
+    public List<GeoRegions> selectGeoRegionsList(RegionSVO region);
 	
 	
 }

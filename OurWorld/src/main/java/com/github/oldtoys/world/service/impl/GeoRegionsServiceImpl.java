@@ -4,6 +4,7 @@ import com.github.oldtoys.world.mapper.GeoRegionsMapper;
 import com.github.oldtoys.world.domain.GeoRegions;
 import com.github.oldtoys.world.service.IGeoRegionsService;
 import com.gitee.fdc.base.service.BaseServiceImple;
+import com.github.oldtoys.world.vo.RegionSVO;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,8 +34,8 @@ public class GeoRegionsServiceImpl extends BaseServiceImple<GeoRegions, Integer>
      * @return 世界区域集合
      */
     @Override
-    public List<GeoRegions> selectGeoRegionsList(GeoRegions geoRegions){
+    public List<GeoRegions> selectGeoRegionsList(RegionSVO region){
         this.pageAble();
-	return geoRegionsMapper.selectGeoRegionsList(geoRegions);
+	return geoRegionsMapper.selectGeoRegionsList(region);
     }
 }

@@ -25,3 +25,9 @@ pagehelper:
     reasonable: true
     supportMethodsArguments: true
     params: count=countSql 
+
+
+logging:
+  level.root: info
+  level.com.github.oldtoys: debug
+    

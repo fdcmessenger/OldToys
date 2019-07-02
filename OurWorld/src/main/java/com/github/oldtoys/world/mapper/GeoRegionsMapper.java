@@ -2,6 +2,7 @@ package com.github.oldtoys.world.mapper;
 
 import com.github.oldtoys.world.domain.GeoRegions;
 import com.gitee.fdc.mapper.SbbsMapper;
+import com.github.oldtoys.world.vo.RegionSVO;
 import java.util.List;	
 
 /**
@@ -18,7 +19,7 @@ public interface GeoRegionsMapper extends SbbsMapper<GeoRegions>{
      * @param geoRegions 世界区域信息
      * @return 世界区域集合
      */
-    public List<GeoRegions> selectGeoRegionsList(GeoRegions geoRegions);
+    public List<GeoRegions> selectGeoRegionsList(RegionSVO region);
 	
 	
 }

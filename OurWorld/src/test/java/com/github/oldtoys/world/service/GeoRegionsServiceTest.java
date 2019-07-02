@@ -1,4 +1,4 @@
-package ${package}.service;
+package com.github.oldtoys.world.service;
 
 import java.util.List;
 import org.junit.Assert;
@@ -10,18 +10,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * ${tableComment} 服务层测试
+ * 世界区域 服务层测试
  * 
- * @author ${author}
- * @date ${datetime}
+ * @author Mr.fdc
+ * @date 2019-07-01T17:22:24.307+08:00
  */
 @Transactional(readOnly = false)
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class I${className}ServiceTest { 	
+public class GeoRegionsServiceTest { 	
 
     @Autowired
-    I${className}Service service;
+    IGeoRegionsService service;
 
     @Test
     public void testSelectAll() {

@@ -3,39 +3,30 @@
 <mapper namespace="com.github.oldtoys.world.mapper.GeoRegionsMapper">
     
     <resultMap type="com.github.oldtoys.world.domain.GeoRegions" id="GeoRegionsResult">
-                <result property="id"    column="id"    />
-                <result property="nameEn"    column="name_en"    />
-                <result property="nameCn"    column="name_cn"    />
-                <result property="m49Code"    column="m49_code"    />
-                <result property="iso3Code"    column="iso_3_code"    />
-                <result property="iso2Code"    column="iso_2_code"    />
-                <result property="geoType"    column="geo_type"    />
-                <result property="pid"    column="pid"    />
-                <result property="pids"    column="pids"    />
-                <result property="useable"    column="useable"    />
-                <result property="remarks"    column="remarks"    />
-            </resultMap>
+        <result property="id"    column="id"    />
+        <result property="nameEn"    column="name_en"    />
+        <result property="nameCn"    column="name_cn"    />
+        <result property="m49Code"    column="m49_code"    />
+        <result property="iso3Code"    column="iso_3_code"    />
+        <result property="iso2Code"    column="iso_2_code"    />
+        <result property="geoType"    column="geo_type"    />
+        <result property="pid"    column="pid"    />
+        <result property="pids"    column="pids"    />
+        <result property="useable"    column="useable"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="sort"    column="sort"    />
+    </resultMap>
 	
     <sql id="selectGeoRegionsVo">
         select id, name_en, name_cn, m49_code, iso_3_code, iso_2_code, geo_type, pid, pids, useable, remarks from ow_geo_regions
     </sql>
 	
-    <select id="selectGeoRegionsList" parameterType="com.github.oldtoys.world.domain.GeoRegions" resultMap="GeoRegionsResult">
+    <select id="selectGeoRegionsList" parameterType="com.github.oldtoys.world.vo.RegionSVO" resultMap="GeoRegionsResult">
         <include refid="selectGeoRegionsVo"/>
         <where>  
-                        <if test="id != null "> and id = #{id}</if>
-                        <if test="nameEn != null  and nameEn != '' "> and name_en = #{nameEn}</if>
-                        <if test="nameCn != null  and nameCn != '' "> and name_cn = #{nameCn}</if>
-                        <if test="m49Code != null  and m49Code != '' "> and m49_code = #{m49Code}</if>
-                        <if test="iso3Code != null  and iso3Code != '' "> and iso_3_code = #{iso3Code}</if>
-                        <if test="iso2Code != null  and iso2Code != '' "> and iso_2_code = #{iso2Code}</if>
-                        <if test="geoType != null "> and geo_type = #{geoType}</if>
-                        <if test="pid != null "> and pid = #{pid}</if>
-                        <if test="pids != null  and pids != '' "> and pids = #{pids}</if>
-                        <if test="useable != null "> and useable = #{useable}</if>
-                        <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
-                    </where>
+            <if test="geoType != null "> and geo_type = #{geoType}</if>
+            <if test="pid != null "> and pid = #{pid}</if>
+            <if test="keywords != null  and keywords != '' "> and MATCH(`name_en`, `name_cn`, `m49_code`, `iso_3_code`, `iso_2_code`,`remarks`) AGAINST(#{keywords})</if>
+        </where>
     </select>
-   
-    
 </mapper>

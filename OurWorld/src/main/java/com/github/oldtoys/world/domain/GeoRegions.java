@@ -2,6 +2,7 @@ package com.github.oldtoys.world.domain;
 
 import com.gitee.fdc.base.entity.TreeEntity;
 import com.gitee.fdc.kits.StringUtils;
+import javax.persistence.Column;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -35,14 +36,17 @@ public class GeoRegions extends TreeEntity<GeoRegions> {
     /**
      * M49编码
      */
+    @Column(name = "m49_code")
     private String m49Code;
     /**
      * ISO二字符编码
      */
+    @Column(name = "iso_2_code")
     private String iso2Code;
     /**
      * ISO三字符编码
      */
+    @Column(name = "iso_3_code")
     private String iso3Code;
 
     @Override
@@ -58,9 +62,14 @@ public class GeoRegions extends TreeEntity<GeoRegions> {
     /**
      * 这是个参考样例，以逗号分隔的字符串数据
      */
-    public String[] getMultiSelectFieldArray() {
+    public String[] getPidsArray() {
         String[] sa = StringUtils.split(this.getPids(), ",");
         return sa == null ? new String[0] : sa;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return this.nameCn;
     }
 
 }
