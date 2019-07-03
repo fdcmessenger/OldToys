@@ -25,6 +25,8 @@ public class GeoRegions extends TreeEntity<GeoRegions> {
      * 地理区域类型
      */
     private Integer geoType;
+    
+    private String continent;
     /**
      * 英文名称
      */

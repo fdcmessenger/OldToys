@@ -10,6 +10,7 @@
         <result property="iso3Code"    column="iso_3_code"    />
         <result property="iso2Code"    column="iso_2_code"    />
         <result property="geoType"    column="geo_type"    />
+        <result property="continent"    column="continent"    />
         <result property="pid"    column="pid"    />
         <result property="pids"    column="pids"    />
         <result property="useable"    column="useable"    />
@@ -18,7 +19,7 @@
     </resultMap>
 	
     <sql id="selectGeoRegionsVo">
-        select id, name_en, name_cn, m49_code, iso_3_code, iso_2_code, geo_type, pid, pids, useable, remarks from ow_geo_regions
+        select id, name_en, name_cn, m49_code, iso_3_code, iso_2_code, geo_type,continent, pid, pids, useable, remarks from ow_geo_regions
     </sql>
 	
     <select id="selectGeoRegionsList" parameterType="com.github.oldtoys.world.vo.RegionSVO" resultMap="GeoRegionsResult">

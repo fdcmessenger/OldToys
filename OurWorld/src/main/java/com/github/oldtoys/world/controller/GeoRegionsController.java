@@ -44,6 +44,11 @@ public class GeoRegionsController {
         return prefix + "/geoRegions";
     }
 
+    @GetMapping("/treeGrid")
+    public String geoRegionsTreeGrid() {
+        return prefix + "/geoRegionsTreeGrid";
+    }
+
     /**
      * 查询世界区域列表
      */
