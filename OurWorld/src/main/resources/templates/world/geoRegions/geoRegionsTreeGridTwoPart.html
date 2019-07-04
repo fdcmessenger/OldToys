@@ -4,21 +4,105 @@
     <th:block th:include="include :: head('世界区域列表')" />
 </head>
 <body>
-    <div id="searchArea" class="collapse in"  style="margin-top: 15px;">
-       
+    <div class="row">
+        <div class="col-md-3">
+
+            <table id="mTable">      </table>
+        </div>
+        <div class="col-md-9">
+            <div id="searchArea" class="collapse in"  style="margin-top: 15px;">
+                <form id="searchForm">
+                    <input id="pid" name="pid" value="0"  type="hidden">
+                </form>
+            </div>
+            <table id="table">      </table>
+        </div>
     </div>
-    <div id="tableToolbar">
-        <div class="form-inline " role="form">
-        </div>  
-    </div>
-    <table id="table">      </table>
 
     <div th:replace="include :: footer"></div>
-    <script th:src="@{/webjars/bootstrap-table/dist/extensions/treegrid/bootstrap-table-treegrid.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap-table/dist/extensions/treegrid/bootstrap-table-treegrid.js}"></script>
     <script th:src="@{/webjars/jquery-treegrid/js/jquery.treegrid.min.js}"></script>
     <script th:inline="javascript">
+        var mprefix = "/world/geoRegions";
+        var mbaseUrl = mprefix + "/regionList";
+        var GeoRegionsM = {
+            id: "mTable",
+            funProps: {
+                profixTitle: "世界区域",
+                url: mbaseUrl,
+            },
+            initColumn: function () {
+                var columns = [
+
+                    {
+                        field: 'id',
+                        title: '区域编号',
+                        visible: false
+                    },
+                    {
+                        field: 'nameCn',
+                        title: '中文名称',
+                        sortable: true
+                    },
+
+                    {
+                        field: 'nameEn',
+                        title: '英文名称',
+                        sortable: true,
+                        visible: false
+                    }
+                ];
+                return columns;
+            },
+            options: {
+                pagination: false,
+                pageSize: 300,
+                pageList: [50, 100, 200, 300],
+                treeShowField: 'nameCn',
+                parentIdField: 'pid',
+                idField: 'id',
+//                rootParentId: '1',
+                showColumns: false,
+                showPaginationSwitch: false,
+                showRefresh: false,
+                showToggle: false,
+                showFullscreen: false,
+                onLoadSuccess: function (data) {
+                    GeoRegionsM.table.btInstance.treegrid({
+                        initialState: 'collapsed',
+                        treeColumn: 0,
+                        onChange: function () {
+                            GeoRegionsM.table.btInstance.bootstrapTable('resetWidth');
+                        }
+                    });
+                    GeoRegionsM.table.btInstance.treegrid('getRootNodes').treegrid('expand');
+                },
+                onDblClickRow: function (row, $element) {
+                    if (row['id'] === 1)
+                        return false;
+                    else {
+                        $('#pid').val(row['id']);
+                        GeoRegions.options.rootParentId = Number($('#pid').val());
+                        GeoRegions.table.btInstance.bootstrapTable('destroy');
+                        GeoRegions.table = (new BTable(GeoRegions.id, GeoRegions.initColumn(), GeoRegions.options)).init(GeoRegions.funProps);
+                    }
+                },
+                queryParams: function (params) {
+                    var queryData = {};
+                    if (this.url === mbaseUrl)
+                        $.each($("#searchForm").serializeArray(), function (i, field) {
+                            queryData[field.name] = field.value;
+                        });
+                    else
+                        queryData['keyWords'] = $('#searchKeyWord').val();
+                    params = $.extend(params, queryData);
+                    return params;
+                }
+            }};
+    </script>
+    <script th:inline="javascript">
         var prefix = "/world/geoRegions";
-        var baseUrl = prefix + "/list";
+        var baseUrl = prefix + "/listWithParent";
         var GeoRegions = {
             id: "table",
             funProps: {
@@ -105,12 +189,13 @@
                 return columns;
             },
             options: {
+                pagination: false,
                 pageSize: 300,
                 pageList: [50, 100, 200, 300],
                 treeShowField: 'nameCn',
                 parentIdField: 'pid',
                 idField: 'id',
-//                rootParentId: '1',
+                rootParentId: 0,
                 showColumns: false,
                 showPaginationSwitch: false,
                 showRefresh: false,
@@ -118,19 +203,13 @@
                 showFullscreen: false,
                 onLoadSuccess: function (data) {
                     GeoRegions.table.btInstance.treegrid({
-                         initialState: 'collapsed',
+                        initialState: 'expanded', //collapsed
                         treeColumn: 0,
                         onChange: function () {
                             GeoRegions.table.btInstance.bootstrapTable('resetWidth');
                         }
                     });
-                      GeoRegions.table.btInstance.treegrid('getRootNodes').treegrid('expand');
                 },
-//                onClickRow: function (row, $element) {
-////                    GeoRegions.rowSelect(row);
-//                    $(".danger").removeClass("danger");
-//                    $element.addClass("danger");
-//                },
                 queryParams: function (params) {
                     var queryData = {};
                     if (this.url === baseUrl)
@@ -143,8 +222,11 @@
                     return params;
                 }
             }};
-
+    </script>
+    <script th:inline="javascript">
         $(document).ready(function () {
+            var mtable = new BTable(GeoRegionsM.id, GeoRegionsM.initColumn(), GeoRegionsM.options);
+            GeoRegionsM.table = mtable.init(GeoRegionsM.funProps);
             var table = new BTable(GeoRegions.id, GeoRegions.initColumn(), GeoRegions.options);
             GeoRegions.table = table.init(GeoRegions.funProps);
         });

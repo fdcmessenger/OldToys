@@ -9,7 +9,7 @@ spring:
     cache: false
   devtools:
     restart:
-      enabled: true
+      enabled: false
 #      additional-paths: src/main/java,src/main/resources/templates,src/main/resources/**
   datasource:
       url: jdbc:mysql://127.0.0.1:3306/oldtoys?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8

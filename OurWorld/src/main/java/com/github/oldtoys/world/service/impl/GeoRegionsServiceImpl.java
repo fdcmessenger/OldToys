@@ -3,7 +3,7 @@ package com.github.oldtoys.world.service.impl;
 import com.github.oldtoys.world.mapper.GeoRegionsMapper;
 import com.github.oldtoys.world.domain.GeoRegions;
 import com.github.oldtoys.world.service.IGeoRegionsService;
-import com.gitee.fdc.base.service.BaseServiceImple;
+import com.gitee.fdc.base.service.BaseTreeServiceImpl;
 import com.github.oldtoys.world.vo.RegionSVO;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import javax.annotation.PostConstruct;
  * @date 2019-07-01T17:22:24.307+08:00
  */
 @Service
-public class GeoRegionsServiceImpl extends BaseServiceImple<GeoRegions, Integer> implements IGeoRegionsService {
+public class GeoRegionsServiceImpl extends BaseTreeServiceImpl<GeoRegions, Integer> implements IGeoRegionsService {
     @Autowired
     private GeoRegionsMapper geoRegionsMapper;
 
@@ -37,5 +37,15 @@ public class GeoRegionsServiceImpl extends BaseServiceImple<GeoRegions, Integer>
     public List<GeoRegions> selectGeoRegionsList(RegionSVO region){
         this.pageAble();
 	return geoRegionsMapper.selectGeoRegionsList(region);
+    }
+
+    @Override
+    public List<GeoRegions> selectGeoRegionsOnlyList() {
+        return geoRegionsMapper.selectGeoRegionsOnlyList();
+    }
+
+    @Override
+    public List<GeoRegions> selectGeoRegionsListWithParents(RegionSVO region) {
+        return this.findByParentIdIncludeParent(region.getPid());
     }
 }

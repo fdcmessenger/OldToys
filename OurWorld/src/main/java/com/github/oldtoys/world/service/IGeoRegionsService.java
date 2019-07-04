@@ -22,6 +22,8 @@ public interface IGeoRegionsService extends DeleteLogicService<GeoRegions,Intege
      * @return 世界区域集合
      */
     public List<GeoRegions> selectGeoRegionsList(RegionSVO region);
+    public List<GeoRegions> selectGeoRegionsOnlyList();
+    public List<GeoRegions> selectGeoRegionsListWithParents(RegionSVO region);
 	
 	
 }

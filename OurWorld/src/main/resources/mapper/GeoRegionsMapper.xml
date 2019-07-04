@@ -30,4 +30,48 @@
             <if test="keywords != null  and keywords != '' "> and MATCH(`name_en`, `name_cn`, `m49_code`, `iso_3_code`, `iso_2_code`,`remarks`) AGAINST(#{keywords})</if>
         </where>
     </select>
+    <select id="selectGeoRegionsOnlyList"  resultMap="GeoRegionsResult">
+        <include refid="selectGeoRegionsVo"/>
+        where  geo_type <![CDATA[ <> ]]>5
+    </select>
+    
+    <sql id="parentJoin">
+        LEFT JOIN ow_geo_regions a1 ON a1.id = a.pid
+    </sql>
+    <sql id="parentSelect">
+        a1.id as "parentId",
+        a1.name_cn as "parentName"
+    </sql>
+    
+    <resultMap id="parentResultMap" extends="GeoRegionsResult" type="com.github.oldtoys.world.domain.GeoRegions">
+        <result property="parent.id" column="parentId" />
+        <result property="parent.nameCn" column="parentName" />
+    </resultMap>
+    <select id="findById" resultMap="parentResultMap" >
+        SELECT  a.* ,
+        <include refid="parentSelect"/>
+        FROM ow_geo_regions a   
+        <include refid="parentJoin"/>
+         
+        WHERE a.id = #{id}
+    </select>
+    <select id="findByPid" resultMap="parentResultMap" >
+        SELECT  a.* ,
+        <include refid="parentSelect"/>
+        FROM ow_geo_regions a   
+        <include refid="parentJoin"/>
+        WHERE a.pid = #{pid}
+    </select>
+    <select id="findByParentIdsLike" resultMap="parentResultMap" >
+        SELECT  a.* ,
+        <include refid="parentSelect"/>
+        FROM ow_geo_regions a   
+        <include refid="parentJoin"/>
+        WHERE a.pids like concat(#{pids},'%')
+    </select>
+    <update id="batchReplacePidsPath">
+        UPDATE ow_geo_regions SET 
+        pids=REPLACE(pids,#{oldPath},#{newPath})
+        WHERE pids like concat(#{oldPath},'%')
+    </update>
 </mapper>

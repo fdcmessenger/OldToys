@@ -49,6 +49,31 @@ public class GeoRegionsController {
         return prefix + "/geoRegionsTreeGrid";
     }
 
+    @GetMapping("/treeGridTwoPart")
+    public String geoRegionsTreeGridTwoPart() {
+        return prefix + "/geoRegionsTreeGridTwoPart";
+    }
+
+    /**
+     * 查询世界区域列表
+     */
+    @PostMapping("/regionList")
+    @ResponseBody
+    public PageInfoBT regionList() {
+        List<GeoRegions> list = geoRegionsService.selectGeoRegionsOnlyList();
+        return new PageInfoBT(list);
+    }
+
+    /**
+     * 查询世界区域列表
+     */
+    @PostMapping("/listWithParent")
+    @ResponseBody
+    public PageInfoBT listWithParent(RegionSVO region) {
+        List<GeoRegions> list = geoRegionsService.selectGeoRegionsListWithParents(region);
+        return new PageInfoBT(list);
+    }
+
     /**
      * 查询世界区域列表
      */
