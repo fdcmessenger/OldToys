@@ -53,6 +53,11 @@ public class GeoRegionsController {
     public String geoRegionsTreeGridTwoPart() {
         return prefix + "/geoRegionsTreeGridTwoPart";
     }
+    
+    @GetMapping("/continentRegions")
+    public String geoRegionsByContinent() {
+        return prefix + "/geoRegionsByContient";
+    }
 
     /**
      * 查询世界区域列表

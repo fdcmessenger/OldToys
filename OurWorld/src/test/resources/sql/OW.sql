@@ -11,7 +11,7 @@
  Target Server Version : 80016
  File Encoding         : 65001
 
- Date: 03/07/2019 11:16:47
+ Date: 04/07/2019 15:53:13
 */
 
 SET NAMES utf8mb4;
@@ -27,7 +27,7 @@ CREATE TABLE `ow_continent`  (
   `name_en` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '英文名称',
   `name_cn` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '中文名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '大洲' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '大洲' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ow_continent
@@ -37,7 +37,7 @@ INSERT INTO `ow_continent` VALUES (2, 'AN', 'Antarctica', '南极洲');
 INSERT INTO `ow_continent` VALUES (3, 'AS', 'Asia', '亚洲');
 INSERT INTO `ow_continent` VALUES (4, 'EU', 'Europe', '欧洲');
 INSERT INTO `ow_continent` VALUES (5, 'NA', 'North America', '北美洲');
-INSERT INTO `ow_continent` VALUES (6, 'OA', 'Oceania', '大洋州');
+INSERT INTO `ow_continent` VALUES (6, 'OC', 'Oceania', '大洋州');
 INSERT INTO `ow_continent` VALUES (7, 'SA', 'South America', '南美洲');
 
 -- ----------------------------
@@ -59,9 +59,9 @@ CREATE TABLE `ow_geo_regions`  (
   `sort` int(11) NULL DEFAULT 30 COMMENT '显示排序',
   `continent` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '所属大洲',
   PRIMARY KEY (`id`) USING BTREE,
-  FULLTEXT INDEX `region_fulltext_idx`(`name_en`, `name_cn`, `m49_code`, `iso_3_code`, `iso_2_code`, `remarks`) WITH PARSER `ngram` COMMENT '全文索引',
-  INDEX `contient_idx`(`continent`) USING BTREE COMMENT '按照大陆(大洲)索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 437 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '世界区域' ROW_FORMAT = Dynamic;
+  INDEX `contient_idx`(`continent`) USING BTREE COMMENT '按照大陆(大洲)索引',
+  FULLTEXT INDEX `region_fulltext_idx`(`name_en`, `name_cn`, `m49_code`, `iso_3_code`, `iso_2_code`, `remarks`) WITH PARSER `ngram` COMMENT '全文索引'
+) ENGINE = InnoDB AUTO_INCREMENT = 438 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '世界区域' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ow_geo_regions
@@ -357,7 +357,7 @@ CREATE TABLE `ow_geo_type`  (
   `type_name_cn` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '区域类型中文名称',
   `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '区域类型' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '区域类型' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ow_geo_type

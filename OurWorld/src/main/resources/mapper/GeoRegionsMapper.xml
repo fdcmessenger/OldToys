@@ -27,6 +27,7 @@
         <where>  
             <if test="geoType != null "> and geo_type = #{geoType}</if>
             <if test="pid != null "> and pid = #{pid}</if>
+            <if test="continent != null  and continent != '' "> and continent = #{continent}</if>
             <if test="keywords != null  and keywords != '' "> and MATCH(`name_en`, `name_cn`, `m49_code`, `iso_3_code`, `iso_2_code`,`remarks`) AGAINST(#{keywords})</if>
         </where>
     </select>

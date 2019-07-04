@@ -26,5 +26,6 @@ public class RegionSVO implements Serializable {
     private Integer geoType;
 
     private String keywords;
+    private String continent;
 
 }

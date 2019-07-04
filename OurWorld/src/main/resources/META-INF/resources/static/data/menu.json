@@ -25,6 +25,10 @@
                     "name": "世界分区域树形列表",
                     "url": "world/geoRegions/treeGridTwoPart",
                     "icon": "fas fa-swimmer"
+                },{
+                    "name": "世界大洲区域列表",
+                    "url": "world/geoRegions/continentRegions",
+                    "icon": "fas fa-swimmer"
                 }
             ]
         },
