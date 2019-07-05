@@ -15,9 +15,11 @@ import com.gitee.fdc.web.ajax.ResultGenerator;
 import com.gitee.fdc.web.page.PageInfoBT;
 import lombok.extern.slf4j.Slf4j;
 import com.github.oldtoys.world.domain.GeoRegions;
+import com.github.oldtoys.world.service.IContinentService;
 import com.github.oldtoys.world.service.IGeoRegionsService;
 import com.github.oldtoys.world.service.IGeoTypeService;
 import com.github.oldtoys.world.vo.RegionSVO;
+import java.util.ArrayList;
 
 /**
  * 世界区域 信息操作处理
@@ -36,31 +38,39 @@ public class GeoRegionsController {
     private IGeoRegionsService geoRegionsService;
     @Autowired
     IGeoTypeService typeService;
+    @Autowired
+    IContinentService continentService;
 
+    /**
+     * 区域维护视图
+     */
     @GetMapping()
     public String geoRegions(ModelMap mmap) {
-        List l = typeService.findAll();
-        mmap.put("geoTypes", l);
+        List tl = typeService.findAll();
+        List cl=continentService.findAll();
+        mmap.put("geoTypes", tl);
+        mmap.put("continents", cl);
         return prefix + "/geoRegions";
     }
 
+    /**
+     * 区域树形列表视图
+     */
     @GetMapping("/treeGrid")
     public String geoRegionsTreeGrid() {
         return prefix + "/geoRegionsTreeGrid";
     }
 
+    /**
+     * 左右树形列表视图
+     */
     @GetMapping("/treeGridTwoPart")
     public String geoRegionsTreeGridTwoPart() {
         return prefix + "/geoRegionsTreeGridTwoPart";
     }
-    
-    @GetMapping("/continentRegions")
-    public String geoRegionsByContinent() {
-        return prefix + "/geoRegionsByContient";
-    }
 
     /**
-     * 查询世界区域列表
+     * 左右树形列表的左侧范围区域数据获取
      */
     @PostMapping("/regionList")
     @ResponseBody
@@ -70,13 +80,27 @@ public class GeoRegionsController {
     }
 
     /**
-     * 查询世界区域列表
+     * 左右树形列表的右侧区域数据按照父节点id获取，连带父节点数据一同返回
      */
     @PostMapping("/listWithParent")
     @ResponseBody
     public PageInfoBT listWithParent(RegionSVO region) {
-        List<GeoRegions> list = geoRegionsService.selectGeoRegionsListWithParents(region);
+        List<GeoRegions> list = null;//new ArrayList();
+        if (region.getPid() == null || region.getPid() == 1 || region.getPid() == 0) {
+            list = new ArrayList();
+        } else {
+            list = geoRegionsService.selectGeoRegionsListWithParents(region);
+        }
         return new PageInfoBT(list);
+
+    }
+
+    /**
+     * 大洲范围区域列表视图
+     */
+    @GetMapping("/continentRegions")
+    public String geoRegionsByContinent() {
+        return prefix + "/geoRegionsByContient";
     }
 
     /**

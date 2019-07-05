@@ -1,11 +1,6 @@
 package com.github.oldtoys.world.vo;
 
-import com.github.oldtoys.world.domain.*;
-import com.gitee.fdc.base.entity.TreeEntity;
-import com.gitee.fdc.kits.StringUtils;
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Table;
 import lombok.Data;
 
 /**

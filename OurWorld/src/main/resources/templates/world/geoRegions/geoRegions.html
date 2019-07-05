@@ -13,6 +13,12 @@
                         <option th:each="type,userStat:${geoTypes}" th:value="${type.id}" th:text="${type.typeNameCn}"></option>
                     </select>
                 </div>
+                <div class="col-auto">
+                    <select name="continent" id="continent"  class="form-control noselect2" placeholder="大洲">
+                        <option value=""  selected>--大洲--</option>  
+                        <option th:each="continent,userStat:${continents}" th:value="${continent.abbr}" th:text="${continent.nameCn}"></option>
+                    </select>
+                </div>
 
                 <div class="col-auto">
                     <input name="keywords" type="text" class="form-control" placeholder="关键词">
