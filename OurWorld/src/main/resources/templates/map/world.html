@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <head>
+    <th:block th:include="include :: head('世界地图')" />
+    <style>
+        html, body {
+            padding: 10;
+            margin: 10;
+            width: 90%;
+            height: 90%;
+        }
+        #vmap {
+            width: 100%;
+            height: 100%;
+            /*background-color: red;*/
+        }
+    </style>
+</head>
+<body>
+    <div id="vmap" ></div>
+
+    <div th:replace="include :: footer"></div>
+    <script type="text/javascript" th:src="@{/webjars/jqvmap/dist/jquery.vmap.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/jqvmap/dist/maps/jquery.vmap.world.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/webjars/jqvmap/examples/js/jquery.vmap.sampledata.js}"></script>
+
+
+    <script th:inline="javascript">
+        jQuery(document).ready(function () {
+            jQuery('#vmap').vectorMap({
+                map: 'world_en',
+                backgroundColor: '#333333',
+                color: '#ffffff',
+                hoverOpacity: 0.7,
+                selectedColor: '#666666',
+                enableZoom: true,
+                showTooltip: true,
+                scaleColors: ['#C8EEFF', '#006491'],
+                values: sample_data,
+                normalizeFunction: 'polynomial',
+                onResize: function (element, width, height) {
+                    console.log('Map Size: ' + width + 'x' + height);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

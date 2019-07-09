@@ -42,6 +42,21 @@
                     "icon": "fas fa-swimmer"
                 }
             ]
+        }, 
+        {
+            "menu": "地图展示",
+            "icon": "laptop",
+            "items": [{
+                    "name": "世界地图vmap",
+                    "url": "maps/world",
+                    "icon": "fas fa-swimmer"
+                },
+                {
+                    "name": "世界地图high",
+                    "url": "maps/world-high",
+                    "icon": "fas fa-swimmer"
+                }
+            ]
         }
     ]
 }
