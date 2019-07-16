@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <head>
+    <th:block th:include="include :: head('字典选择项列表')" />
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-3">
+
+            <table id="mTable">      </table>
+        </div>
+        <div class="col-md-9">
+            <div id="searchArea" class="collapse in"  style="margin-top: 15px;">
+                <form id="searchForm">
+                    <input id="dictId" name="dictId" value=""  type="hidden">
+                </form>
+            </div>
+            <div id="tableToolbar">
+                <div class="form-inline " role="form">
+                    <button type="button" class="btn btn-outline-success"  data-toggle="tooltip"   title="新建" onclick="SysDictItem.add();"><i class="fas fa-file-alt"></i></button>
+                    <button type="button" class="btn btn-outline-warning" data-toggle="tooltip"   title="修改"  onclick="SysDictItem.table.edit();"><i class="fas fa-pencil-alt "></i></button>
+                    <button type="button" class="btn btn-outline-danger" data-toggle="tooltip"     title="删除" onclick="SysDictItem.table.delete();"><i class="fas fa-trash-alt "></i></button>
+                </div>  
+            </div>
+            <table id="table">      </table>
+        </div>
+    </div>
+
+    <div th:replace="include :: footer"></div>
+    <script th:inline="javascript">
+        var mprefix = "/dict/sysDict";
+        var mbaseUrl = mprefix + "/list";
+        var SysDict = {
+            id: "mTable",
+            funProps: {
+                profixTitle: "字典",
+                url: mbaseUrl
+            },
+            initColumn: function () {
+                var columns = [
+                    {field: 'id', title: '字典项ID', visible: false},
+                    {field: 'name', title: '字典项名称', sortable: true},
+                    {field: 'type', title: '字典项关键字', sortable: true},
+                ];
+                return columns;
+            },
+            options: {
+                showColumns: true,
+                showPaginationSwitch: false,
+                showRefresh: true,
+                showToggle: false,
+                showFullscreen: false,
+                onClickRow: function (row, $element) {
+                    $('#dictId').val(row['id']);
+                    SysDictItem.table.search();
+                },
+                queryParams: function (params) {
+                    var queryData = {};
+                    params = $.extend(params, queryData);
+                    return params;
+                }
+            }};
+    </script>
+    <script th:inline="javascript">
+        var prefix = "/dict/sysDictItem";
+        var baseUrl = prefix + "/list";
+        var SysDictItem = {
+            id: "table",
+            funProps: {
+                profixTitle: "字典选择项",
+                url: baseUrl,
+                fullTextUrl: prefix + "/fullTextList",
+                addUrl: prefix + "/add/",
+                editUrl: prefix + "/edit/",
+                delUrl: prefix + "/delete",
+                unDelUrl: prefix + "/undelete",
+            },
+            initColumn: function () {
+                var columns = [
+                    {checkbox: "true"},
+
+                    {
+                        field: 'id',
+                        title: '主键ID',
+                        visible: false
+                    },
+
+                    {
+                        field: 'value',
+                        title: '选项值',
+                        sortable: true
+                    },
+
+                    {
+                        field: 'label',
+                        title: '选项标签',
+                        sortable: true
+                    },
+
+                    {
+                        field: 'dictId',
+                        title: '字典项ID',
+                        sortable: true
+                    },
+
+                    {
+                        field: 'dictType',
+                        title: '字典项关键字',
+                        sortable: true
+                    },
+
+                    {
+                        field: 'isDisabled',
+                        title: '是否已经被废弃',
+                        sortable: true
+                    },
+
+                    {
+                        field: 'remarks',
+                        title: '备注',
+                        sortable: true
+                    },
+
+                    {
+                        field: 'sortNum',
+                        title: '排序值',
+                        sortable: true
+                    },
+
+                    {title: '操作', align: 'center',
+                        formatter: function (value, row, index) {
+                            var actions = [];
+                            actions.push('<a class="btn btn-success btn-xs " href="#"  title="修改"  onclick="SysDictItem.table.edit(\'' + row.id + '\')"><i class="fas fa-pencil-alt "></i></a> ');
+//                            if (row.delFlag === 0)
+                            actions.push('<a class="btn btn-danger btn-xs " href="#"  title="删除"  onclick="SysDictItem.table.delete(\'' + row.id + '\')"><i class="fas fa-trash-alt "></i></a> ');
+//                            else
+//                                actions.push('<a class="btn btn-info btn-xs " href="#"  title="恢复"  onclick="SysDictItem.table.undelete(\'' + row.id + '\')"><i class="fas fa-undo "></i></a> ');
+                            return actions.join('');
+                        }}
+                ];
+                return columns;
+            },
+            options: {
+                queryParams: function (params) {
+                    var queryData = {};
+                    if (this.url === baseUrl)
+                        $.each($("#searchForm").serializeArray(), function (i, field) {
+                            queryData[field.name] = field.value;
+                        });
+                    else
+                        queryData['keyWords'] = $('#searchKeyWord').val();
+                    params = $.extend(params, queryData);
+                    return params;
+                }
+            },
+            add: function () {
+                var title = this.funProps.profixTitle + "添加";
+
+                var url = this.funProps.addUrl;
+                var dictId = $("#dictId").val();
+                console.log(dictId);
+                console.log(this);
+                if ($.common.isEmpty(dictId)) {
+                    $.alertMsg.alertWarning("请选择字典类型");
+                    return;
+                } else {
+                    url = url + dictId;
+                }
+                $.popup.openFull(title, url);
+            }
+        };
+
+        $(document).ready(function () {
+            var mtable = new BTable(SysDict.id, SysDict.initColumn(), SysDict.options);
+            SysDict.table = mtable.init(SysDict.funProps);
+            var table = new BTable(SysDictItem.id, SysDictItem.initColumn(), SysDictItem.options);
+            SysDictItem.table = table.init(SysDictItem.funProps);
+        });
+    </script>
+</body>
+</html>

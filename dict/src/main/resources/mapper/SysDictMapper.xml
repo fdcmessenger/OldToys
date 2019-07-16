@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.oldtoys.dict.mapper.SysDictMapper">
+    
+    <resultMap type="com.github.oldtoys.dict.domain.SysDict" id="SysDictResult">
+                <result property="id"    column="id"    />
+                <result property="name"    column="name"    />
+                <result property="type"    column="type"    />
+                <result property="remarks"    column="remarks"    />
+            </resultMap>
+	
+    <sql id="selectSysDictVo">
+        select id, name, type, remarks from sys_dict
+    </sql>
+	
+    <select id="selectSysDictList" parameterType="com.github.oldtoys.dict.domain.SysDict" resultMap="SysDictResult">
+        <include refid="selectSysDictVo"/>
+        <where>  
+                        <if test="id != null "> and id = #{id}</if>
+                        <if test="name != null  and name != '' "> and name = #{name}</if>
+                        <if test="type != null  and type != '' "> and type = #{type}</if>
+                        <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+                    </where>
+    </select>
+   
+    
+</mapper>

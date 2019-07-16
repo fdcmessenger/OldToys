@@ -6,9 +6,14 @@
         <artifactId>parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>gen</artifactId>
+    <artifactId>dict</artifactId>
     <packaging>jar</packaging>
     <dependencies>
+        <dependency>
+            <groupId>com.github.oldtoys</groupId>
+            <artifactId>gen</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.gitee.fdc</groupId>
             <artifactId>adminUI-thymeleaf</artifactId>
@@ -16,12 +21,6 @@
         <dependency>
             <groupId>com.gitee.fdc</groupId>
             <artifactId>generalDao</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>1.7</version>
-            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -33,7 +32,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
     </dependencies>
     <build>
         <plugins>
@@ -44,31 +42,13 @@
                 <configuration>
                     <fork>true</fork>
                 </configuration>
-                <!--                <executions>
+                <executions>
                     <execution>
                         <goals>
                             <goal>repackage</goal>
                         </goals>
                     </execution>
-                </executions>-->
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <!--<version>3.1.0</version>-->
-                <configuration>
-                    <!--                    <archive>
-                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-                    </archive>-->
-                    <excludes>
-                        <exclude>**/*Application.*</exclude>
-                        <exclude>**/application.*</exclude>
-                        <exclude>**/spring-devtools.properties</exclude>
-                        <exclude>**/menu.json</exclude>
-                        <exclude>**/demo/**</exclude>
-                        <exclude>**/Demo*</exclude>
-                    </excludes>
-                </configuration>
+                </executions>
             </plugin>
         </plugins>
     </build>

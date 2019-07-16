@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.oldtoys.dict.mapper.SysDictItemMapper">
+    
+    <resultMap type="com.github.oldtoys.dict.domain.SysDictItem" id="SysDictItemResult">
+                <result property="id"    column="id"    />
+                <result property="value"    column="value"    />
+                <result property="label"    column="label"    />
+                <result property="dictId"    column="dict_id"    />
+                <result property="dictType"    column="dict_type"    />
+                <result property="isDisabled"    column="is_disabled"    />
+                <result property="remarks"    column="remarks"    />
+                <result property="sortNum"    column="sort_num"    />
+            </resultMap>
+	
+    <sql id="selectSysDictItemVo">
+        select id, value, label, dict_id, dict_type, is_disabled, remarks, sort_num from sys_dict_item
+    </sql>
+	
+    <select id="selectSysDictItemList" parameterType="com.github.oldtoys.dict.domain.SysDictItem" resultMap="SysDictItemResult">
+        <include refid="selectSysDictItemVo"/>
+        <where>  
+                        <if test="id != null "> and id = #{id}</if>
+                        <if test="value != null  and value != '' "> and value = #{value}</if>
+                        <if test="label != null  and label != '' "> and label = #{label}</if>
+                        <if test="dictId != null "> and dict_id = #{dictId}</if>
+                        <if test="dictType != null  and dictType != '' "> and dict_type = #{dictType}</if>
+                        <if test="isDisabled != null "> and is_disabled = #{isDisabled}</if>
+                        <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+                        <if test="sortNum != null "> and sort_num = #{sortNum}</if>
+                    </where>
+    </select>
+   
+    
+</mapper>

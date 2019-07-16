@@ -9,6 +9,7 @@
     <modules>
         <module>gen</module>
         <module>OurWorld</module>
+        <module>dict</module>
     </modules>
     <properties>
 

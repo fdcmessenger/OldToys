@@ -1,0 +1,22 @@
+{
+    "menus": [{
+            "menu": "字典管理",
+            "icon": "laptop",
+            "items": [{
+                    "name": "字典列表",
+                    "url": "dict/sysDict",
+                    "icon": "fas fa-swimmer"
+                }
+            ]
+        }, {
+            "menu": "字典选择项管理",
+            "icon": "laptop",
+            "items": [{
+                    "name": "字典选择项列表",
+                    "url": "dict/sysDictItem",
+                    "icon": "fas fa-swimmer"
+                }
+            ]
+        }
+    ]
+}
