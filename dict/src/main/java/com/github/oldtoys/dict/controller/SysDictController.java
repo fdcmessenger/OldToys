@@ -19,30 +19,31 @@ import com.github.oldtoys.dict.service.ISysDictService;
 
 /**
  * 字典 信息操作处理
- * 
+ *
  * @author Mr.fdc
  * @date 2019-07-16T13:27:01.055+08:00
  */
 @Slf4j
 @Controller
 @RequestMapping("/dict/sysDict")
-public class SysDictController{
+public class SysDictController {
+
     private String prefix = "dict/sysDict";
-	
+
     @Autowired
     private ISysDictService sysDictService;
-	
+
     @GetMapping()
-    public String sysDict(){
+    public String sysDict() {
         return prefix + "/sysDict";
     }
-	
+
     /**
      * 查询字典列表
      */
     @PostMapping("/list")
     @ResponseBody
-    public PageInfoBT list(SysDict sysDict){
+    public PageInfoBT list(SysDict sysDict) {
         List<SysDict> list = sysDictService.selectSysDictList(sysDict);
         return new PageInfoBT(list);
     }
@@ -51,49 +52,62 @@ public class SysDictController{
      * 新增字典
      */
     @GetMapping("/add")
-    public String add(ModelMap mmap){
+    public String add(ModelMap mmap) {
         SysDict sysDict = new SysDict();
         mmap.put("sysDict", sysDict);
         return prefix + "/form";
     }
-	
+
     /**
      * 修改字典
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Integer id, ModelMap mmap){
-	SysDict sysDict = sysDictService.findById(id);
-	mmap.put("sysDict", sysDict);
+    public String edit(@PathVariable("id") Integer id, ModelMap mmap) {
+        SysDict sysDict = sysDictService.findById(id);
+        mmap.put("sysDict", sysDict);
         return prefix + "/form";
     }
-	
+
     /**
      * 修改保存字典
      */
     @PostMapping("/save")
     @ResponseBody
-    public Result save(SysDict sysDict){		
+    public Result save(SysDict sysDict) {
         int rs = sysDictService.save(sysDict);
         Result rt = rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("保存失败");
         return rt;
     }
-	
+
     /**
      * 删除字典
      */
-    @PostMapping( "/delete")
+    @PostMapping("/delete")
     @ResponseBody
-    public Result remove(@RequestParam String ids){		
+    public Result remove(@RequestParam String ids) {
         int rs = sysDictService.deleteByIds(ids);
         return rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("删除失败");
     }
+
     /**
      * 恢复字典
      */
     @PostMapping("/undelete")
     @ResponseBody
-    public Result unDelete(@RequestParam Integer id) {        
-      int rs = sysDictService.unDeleteById(id);
-      return rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("恢复失败");
+    public Result unDelete(@RequestParam Integer id) {
+        int rs = sysDictService.unDeleteById(id);
+        return rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("恢复失败");
+    }
+
+    @RequestMapping(value = "dictTypeCheck")
+    @ResponseBody
+    public Object dictTypeCheck(@RequestParam(value = "dictId") Integer dictId, @RequestParam(value = "dictType") String dictType) {
+        return this.sysDictService.isDictTypeExist(dictId, dictType);
+    }
+
+    @RequestMapping(value = "dictNameCheck")
+    @ResponseBody
+    public Object dictNameCheck(@RequestParam(value = "dictId") Integer dictId, @RequestParam(value = "dictName") String dictName) {
+        return this.sysDictService.isDictNameExist(dictId, dictName);
     }
 }
