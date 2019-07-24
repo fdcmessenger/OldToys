@@ -3,7 +3,6 @@ package com.github.oldtoys.dict.domain;
 import com.gitee.fdc.base.entity.BaseEntity;
 import javax.persistence.Table;
 import lombok.Data;
-import com.gitee.fdc.kits.StringUtils;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 

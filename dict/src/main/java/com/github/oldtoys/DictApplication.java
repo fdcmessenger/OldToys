@@ -12,8 +12,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @Controller
 @MapperScan(basePackages = {
-    "com.github.oldtoys.dict.mapper.**",
-    "com.github.oldtoys.gen.mapper.**"
+    "com.github.oldtoys.dict.mapper.**"
 })
 @ComponentScan(basePackages = {"com.gitee.fdc", "com.github.oldtoys"})
 public class DictApplication {

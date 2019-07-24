@@ -2,3 +2,6 @@
 /gen/target/
 /OurWorld/target/
 /dict/target/
+/cfg-hazelcast/target/
+/cfg-swagger/target/
+/cfg-redis/target/

@@ -8,6 +8,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * 字典 服务层实现
@@ -16,6 +19,7 @@ import javax.annotation.PostConstruct;
  * @date 2019-07-16T13:27:01.055+08:00
  */
 @Service
+@CacheConfig(cacheNames = "dicts")
 public class SysDictServiceImpl extends BaseServiceImple<SysDict, Integer> implements ISysDictService {
 
     @Autowired
@@ -48,6 +52,42 @@ public class SysDictServiceImpl extends BaseServiceImple<SysDict, Integer> imple
     public boolean isDictNameExist(Integer dictId, String dictName) {
         boolean res = this.isPropertyUnique(dictId, "name", dictName);
         return res;
-
     }
+
+    @Override
+    @Cacheable(key = "'all'")
+    public List findAll() {
+        return super.findAll(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    public int delete(SysDict entity) {
+        return super.delete(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    public int deleteByIds(String ids) {
+        return super.deleteByIds(ids); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    public int unDeleteById(Integer id) {
+        return super.unDeleteById(id); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    public int deleteById(Integer id) {
+        return super.deleteById(id); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    public int save(SysDict entity) {
+        return super.save(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
