@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+    <th:block th:include="include :: head('系统角色')" />
+</head>
+<body>
+
+    <form id="sysRoleForm" novalidate=true th:object="${sysRole}">
+        <input id="id" name="id" th:field="*{id}"  type="hidden">
+                        <div class="form-row">
+            <div class="col form-group">
+                <input type="text" id="name" name="name" th:field="*{name}" class="form-control" placeholder="角色名称">
+            </div>
+        </div>
+
+                                <div class="form-row">
+            <div class="col form-group">
+                <input type="text" id="isAdmin" name="isAdmin" th:field="*{isAdmin}" class="form-control" placeholder="">
+            </div>
+        </div>
+
+                                <div class="form-row">
+            <div class="col form-group">
+                <input type="text" id="pid" name="pid" th:field="*{pid}" class="form-control" placeholder="父ID">
+            </div>
+        </div>
+
+                                <div class="form-row">
+            <div class="col form-group">
+                <input type="text" id="pids" name="pids" th:field="*{pids}" class="form-control" placeholder="父亲路径">
+            </div>
+        </div>
+
+                                <div class="form-row">
+            <div class="col form-group">
+                <input type="text" id="sort" name="sort" th:field="*{sort}" class="form-control" placeholder="排序">
+            </div>
+        </div>
+
+                                <div class="form-row">
+            <div class="col form-group">
+                <input type="text" id="remarks" name="remarks" th:field="*{remarks}" class="form-control" placeholder="备注">
+            </div>
+        </div>
+
+                                <div class="form-row">
+            <div class="col form-group">
+                <input type="text" id="useable" name="useable" th:field="*{useable}" class="form-control" placeholder="是否可用">
+            </div>
+        </div>
+
+            
+
+
+
+    </form>
+    <div th:replace="include :: footer"></div>
+    <script type="text/javascript">
+       var prefix ="/system/sysRole";
+        $("#sysRoleForm").validate({
+            rules: {
+                intField: {
+                    required: true,
+                    digits: true
+                },
+                varcharField: {
+                    required: true,
+                }
+            }
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                var data = $("#sysRoleForm").serializeArray();
+                $.operation.saveModal(prefix + "/save", data, function () {
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭  
+                    parent.SysRole.table.refresh();
+                });
+            }
+        }
+    </script>
+</body>
+</html>

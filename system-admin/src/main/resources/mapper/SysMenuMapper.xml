@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.oldtoys.system.mapper.SysMenuMapper">
+    
+    <resultMap type="com.github.oldtoys.system.domain.SysMenu" id="SysMenuResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="pid"    column="pid"    />
+        <result property="pids"    column="pids"    />
+        <result property="sort"    column="sort"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="useable"    column="useable"    />
+        <result property="href"    column="href"    />
+        <result property="icon"    column="icon"    />
+        <result property="isShow"    column="is_show"    />
+        <result property="permission"    column="permission"    />
+    </resultMap>
+    <sql id="parentJoin">
+        LEFT JOIN sys_menu a1 ON a1.id = a.pid
+    </sql>
+    <sql id="parentSelect">
+        a1.id as "parentId",
+        a1.name as "parentName"
+    </sql>
+    
+    <resultMap id="parentResultMap" extends="SysMenuResult" type="com.github.oldtoys.system.domain.SysMenu">
+        <result property="parent.id" column="parentId" />
+        <result property="parent.name" column="parentName" />
+    </resultMap>	
+    <sql id="selectSysMenuVo">
+        select id, name, pid, pids, sort, remarks, useable, href, icon, is_show, permission from sys_menu
+    </sql>
+	
+    <select id="selectSysMenuList" parameterType="com.github.oldtoys.system.domain.SysMenu" resultMap="parentResultMap">
+        <include refid="selectSysMenuVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="name != null  and name != '' "> and name = #{name}</if>
+            <if test="pid != null "> and pid = #{pid}</if>
+            <if test="pids != null  and pids != '' "> and pids = #{pids}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+            <if test="useable != null "> and is_enable = #{useable}</if>
+            <if test="href != null  and href != '' "> and href = #{href}</if>
+            <if test="icon != null  and icon != '' "> and icon = #{icon}</if>
+            <if test="isShow != null "> and is_show = #{isShow}</if>
+            <if test="permission != null  and permission != '' "> and permission = #{permission}</if>
+        </where>
+    </select>
+   <select id="findById" resultMap="parentResultMap" >
+        SELECT  a.* ,
+        <include refid="parentSelect"/>
+        FROM sys_menu a   
+        <include refid="parentJoin"/>
+         
+        WHERE a.id = #{id}
+    </select>
+    <select id="findByPid" resultMap="parentResultMap" >
+        SELECT  a.* ,
+        <include refid="parentSelect"/>
+        FROM sys_menu a   
+        <include refid="parentJoin"/>
+        WHERE a.pid = #{pid}
+    </select>
+    <select id="findByParentIdsLike" resultMap="parentResultMap" >
+        SELECT  a.* ,
+        <include refid="parentSelect"/>
+        FROM sys_menu a   
+        <include refid="parentJoin"/>
+        WHERE a.pids like concat(#{pids},'%')
+    </select>
+    <update id="batchReplacePidsPath">
+        UPDATE sys_menu SET 
+        pids=REPLACE(pids,#{oldPath},#{newPath})
+        WHERE pids like concat(#{oldPath},'%')
+    </update>
+    
+</mapper>

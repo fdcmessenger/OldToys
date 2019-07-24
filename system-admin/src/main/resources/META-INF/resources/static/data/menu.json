@@ -1,0 +1,23 @@
+{
+    "menus": [{
+            "menu": "系统菜单管理",
+            "icon": "laptop",
+            "items": [{
+                    "name": "系统菜单列表",
+                    "url": "system/sysMenu",
+                    "icon": "fas fa-swimmer"
+                }
+            ]
+        }
+        , {
+            "menu": "系统角色管理",
+            "icon": "laptop",
+            "items": [{
+                    "name": "系统角色列表",
+                    "url": "system/sysRole",
+                    "icon": "fas fa-swimmer"
+                }
+            ]
+        }
+    ]
+}

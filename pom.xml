@@ -13,6 +13,7 @@
         <module>cfg-swagger</module>
         <module>cfg-hazelcast</module>
         <module>cfg-redis</module>
+        <module>system-admin</module>
     </modules>
     <properties>
 
