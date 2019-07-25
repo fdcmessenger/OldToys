@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.oldtoys.system.mapper.SysUserMapper">
+    
+    <resultMap type="com.github.oldtoys.system.domain.SysUser" id="SysUserResult">
+        <result property="id"    column="id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="password"    column="password"    />
+        <result property="salt"    column="salt"    />
+        <result property="name"    column="name"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="email"    column="email"    />
+        <result property="status"    column="status"    />
+        <result property="gender"    column="gender"    />
+        <result property="birthday"    column="birthday"    />
+    </resultMap>
+	
+    <sql id="selectSysUserVo">
+        select id, user_name, password, salt, name, mobile, email, status, gender, birthday from sys_user
+    </sql>
+	
+    <select id="selectSysUserList" parameterType="com.github.oldtoys.system.domain.SysUser" resultMap="SysUserResult">
+        <include refid="selectSysUserVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="userName != null  and userName != '' "> and user_name = #{userName}</if>
+            <if test="password != null  and password != '' "> and password = #{password}</if>
+            <if test="salt != null  and salt != '' "> and salt = #{salt}</if>
+            <if test="name != null  and name != '' "> and name = #{name}</if>
+            <if test="mobile != null  and mobile != '' "> and mobile = #{mobile}</if>
+            <if test="email != null  and email != '' "> and email = #{email}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="birthday != null "> and birthday = #{birthday}</if>
+        </where>
+    </select>
+    <!-- 根据登录名查询用户 -->
+    <select id="findByUserName" resultMap="SysUserResult" >
+        SELECT  *        FROM sys_user a        WHERE a.user_name = #{userName}
+    </select>
+    <!-- 更新用户密码 -->
+    <update id="updatePasswordById">
+        UPDATE sys_user SET 
+        password = #{password} 
+        WHERE id = #{id}
+    </update>
+    <!-- 更新用户密码 -->
+    <update id="updatePasswordByUserName">
+        UPDATE sys_user SET 
+        password = #{password} 
+        WHERE user_name = #{userName}
+    </update>
+        
+    <select id="findByOffices"  resultMap="SysUserResult" >
+        SELECT a1.* from sys_office_user a LEFT JOIN sys_user a1 on a.user_id=a1.id 
+        <where>
+            
+            a.office_id IN
+            <foreach collection="offices" index="index" item="o" open="("  separator="," close=")">
+                #{o.id}
+            </foreach>
+            <if test="dto.typeId != null">
+                AND a.our_type_id = #{dto.typeId}
+            </if>
+            <if test="dto.userName != null   and dto.userName != ''">
+                AND (a1.user_name like concat('%',#{dto.userName},'%') or a1.name like concat('%',#{dto.userName},'%'))
+            </if>
+        </where>
+        
+    </select>
+    <select id="findHasNoOffices"  resultMap="SysUserResult" >
+        SELECT a.* from sys_user a 
+        <where>
+            not EXISTS (SELECT * from sys_office_user a1 where a1.user_id=a.id)
+            <if test="dto.userName != null   and dto.userName != ''">
+                AND (a.user_name like concat('%',#{dto.userName},'%') or a.name like concat('%',#{dto.userName},'%'))
+            </if>
+        </where>
+        
+    </select>
+    
+</mapper>

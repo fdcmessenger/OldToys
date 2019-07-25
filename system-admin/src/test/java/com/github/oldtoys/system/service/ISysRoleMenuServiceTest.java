@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = false)
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Sql({"classpath:/testData/RoleMenuTestInit.sql"})//delete all and insert test data
+@Sql({"classpath:/testData/roleMenuTestInit.sql"})//delete all and insert test data
 public class ISysRoleMenuServiceTest {
 
     @Autowired
@@ -54,5 +54,4 @@ public class ISysRoleMenuServiceTest {
         int r = this.service.saveRomeMenus(roleId, menuIds);
         Assert.assertEquals(2, r);
     }
-
 }

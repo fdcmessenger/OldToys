@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.oldtoys.system.mapper.SysRoleUserMapper">
+    
+    <resultMap type="com.github.oldtoys.system.domain.SysRoleUser" id="SysRoleUserResult">
+        <result property="id"    column="id"    />
+        <result property="roleId"    column="role_id"    />
+        <result property="userId"    column="user_id"    />
+    </resultMap>
+    <sql id="roleUserColumns">
+        a.id AS id,
+        a.role_id AS 'roleId',
+        a.user_id AS 'userId'
+    </sql>
+    <sql id="roleUserJoinColumns">
+        ,
+        a1.id AS 'role.id',
+        a1.`name` AS 'role.name',
+        a1.remarks AS 'role.remarks',
+        
+        a2.id AS 'user.id',
+        a2.`name` AS 'user.name',
+        a2.`user_name` AS 'user.userName'
+    </sql>
+    <sql id="roleUserJoins">
+        LEFT JOIN sys_role a1 ON a.role_id = a1.id
+        LEFT JOIN sys_user a2 ON a.user_id= a2.id
+    </sql>	
+    <sql id="selectSysRoleUserVo">
+        select id, role_id, user_id from sys_role_user
+    </sql>
+	
+    <select id="selectSysRoleUserList" parameterType="com.github.oldtoys.system.domain.SysRoleUser" resultMap="SysRoleUserResult">
+        <include refid="selectSysRoleUserVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="roleId != null "> and role_id = #{roleId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+        </where>
+    </select>
+   <select id="findRoleUserByRoleUserId" resultType="com.github.oldtoys.system.domain.SysRoleUser">
+        SELECT 
+        <include refid="roleUserColumns"/>  
+        <include refid="roleUserJoinColumns"/>     
+        from	sys_role_user a
+        <include refid="roleUserJoins"/>
+        <where>
+            a.id = #{roleUserId}
+        </where>
+    </select>
+    <select id="findRoleUserListByUserId" resultType="com.github.oldtoys.system.domain.SysRoleUser">
+        SELECT 
+        <include refid="roleUserColumns"/>  
+        <include refid="roleUserJoinColumns"/>     
+        from	sys_role_user a
+        <include refid="roleUserJoins"/>
+        <where>
+            a.user_id = #{userId}
+        </where>
+    </select>
+    <select id="findRoleUserListByRoleId" resultType="com.github.oldtoys.system.domain.SysRoleUser">
+        SELECT 
+        <include refid="roleUserColumns"/>  
+        <include refid="roleUserJoinColumns"/>     
+        from	sys_role_user a
+        <include refid="roleUserJoins"/>
+        <where>
+            a.role_id = #{roleId}
+        </where>
+    </select>
+    
+</mapper>

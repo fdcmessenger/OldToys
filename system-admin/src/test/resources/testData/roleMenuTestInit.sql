@@ -18,8 +18,10 @@ INSERT INTO `sys_menu` VALUES ('4', '4', '2', '0,1,2,', '0', null, 0, '2', '2', 
 INSERT INTO `sys_menu` VALUES ('5', '5', '3', '0,1,3,', '0', null, 0, '3', '3', 0, '3');
 
 -- 角色
-INSERT INTO `sys_role` VALUES ('1', '1', 1,  '1', 1);
-INSERT INTO `sys_role` VALUES ('2', '2', 1,  '2', 1);
+
+INSERT INTO `sys_role` VALUES ('1', '1', 1,  '1', 1,  '1');
+INSERT INTO `sys_role` VALUES ('2', '2', 1,  '2', 1,  '2');
+INSERT INTO `sys_role` VALUES ('3', '3', 1, '3', 1,  '3');
 
 
 INSERT INTO `sys_role_menu` (`id`, `role_id`,  `menu_id`) VALUES (1, 1,  1);

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.oldtoys.system.mapper.SysOfficeRoleMapper">
+    
+    <resultMap type="com.github.oldtoys.system.domain.SysOfficeRole" id="SysOfficeRoleResult">
+        <result property="id"    column="id"    />
+        <result property="officeId"    column="office_id"    />
+        <result property="roleId"    column="role_id"    />
+        <result property="isDefault"    column="is_default"    />
+    </resultMap>
+	
+    <sql id="selectSysOfficeRoleVo">
+        select id, office_id, role_id, is_default from sys_office_role
+    </sql>
+	
+    <select id="selectSysOfficeRoleList" parameterType="com.github.oldtoys.system.domain.SysOfficeRole" resultMap="SysOfficeRoleResult">
+        <include refid="selectSysOfficeRoleVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="officeId != null "> and office_id = #{officeId}</if>
+            <if test="roleId != null "> and role_id = #{roleId}</if>
+        </where>
+    </select>
+   
+    <sql id="officeRoleColumns">
+        a.id AS id,
+        a.office_id AS 'officeId',
+        a.role_id AS 'roleId',
+        a.is_default AS 'isDefault'
+    </sql>
+    <sql id="officeRoleJoinColumns">
+        ,
+        a1.id AS 'office.id',
+        a1.`name` AS 'office.name',
+        a1.pid AS 'office.pid',
+        a1.pids AS 'office.pids',
+        a1.remarks AS 'office.remarks',
+        
+        a2.id AS 'role.id',
+        a2.`name` AS 'role.name',
+        a2.`role_key` AS 'role.roleKey'
+    </sql>
+    <sql id="officeRoleJoins">
+        LEFT JOIN sys_office a1 ON a.office_id = a1.id
+        LEFT JOIN sys_role a2 ON a.role_id = a2.id
+    </sql>
+    <select id="findOfficeRoleListByRoleId" resultType="com.github.oldtoys.system.domain.SysOfficeRole">
+        SELECT 
+        <include refid="officeRoleColumns"/>     
+        <include refid="officeRoleJoinColumns"/>  
+        from	sys_office_role a
+        <include refid="officeRoleJoins"/>
+        <where>
+            a2.id = #{roleId}
+        </where>
+    </select>
+    <select id="findOfficeRoleListByOfficeId" resultType="com.github.oldtoys.system.domain.SysOfficeRole">
+        SELECT 
+        <include refid="officeRoleColumns"/>     
+        <include refid="officeRoleJoinColumns"/>  
+        from	sys_office_role a
+        <include refid="officeRoleJoins"/>
+        <where>
+            a1.id = #{officeId}
+        </where>
+    </select>
+    
+    <select id="findOfficeRoleListByOfficeIds" resultType="com.github.oldtoys.system.domain.SysOfficeRole">
+        SELECT 
+        <include refid="officeRoleColumns"/>     
+        <include refid="officeRoleJoinColumns"/>  
+        from	sys_office_role a
+        <include refid="officeRoleJoins"/>
+        <where>
+            a1.id  IN 
+            <foreach collection="officeIds" index="index" item="item" open="(" separator="," close=")" >  
+                #{item}  
+            </foreach> 
+        </where>
+    </select>
+    
+    <update id="deleteUnusedOfficeRoles">
+        DELETE from sys_office_role where 
+        office_id=#{officeId}
+        <if test="roleIds != null  and roleIds.length>0">
+            and
+            role_id not in 
+            <foreach collection="roleIds" index="index" item="item" open="(" separator="," close=")" >  
+                #{item}  
+            </foreach> 
+        </if>
+    </update>
+        
+    <update id="insertNewOfficeRoles">
+        INSERT INTO sys_office_role (office_id, role_id)(
+        SELECT
+        #{officeId},
+        t.id
+        FROM
+        sys_role t
+        WHERE
+        t.id IN (
+        SELECT
+        um.id
+        FROM
+        sys_role um
+        WHERE
+        um.id IN 
+        <foreach collection="roleIds" index="index" item="item" open="(" separator="," close=")" >  
+            #{item}  
+        </foreach> 
+                                
+        AND um.id NOT IN (
+        SELECT
+        rm.role_id
+        FROM
+        sys_office_role rm
+        WHERE
+        rm.office_id = #{officeId}
+        )        )        )
+    </update>
+
+</mapper>

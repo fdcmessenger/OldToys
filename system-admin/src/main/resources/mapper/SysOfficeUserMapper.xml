@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.oldtoys.system.mapper.SysOfficeUserMapper">
+    
+    <resultMap type="com.github.oldtoys.system.domain.SysOfficeUser" id="SysOfficeUserResult">
+        <result property="id"    column="id"    />
+        <result property="officeId"    column="office_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="inheritRole"    column="inherit_role"    />
+    </resultMap>
+	
+    <sql id="selectSysOfficeUserVo">
+        select id, office_id, user_id, inherit_role from sys_office_user
+    </sql>
+	
+    <select id="selectSysOfficeUserList" parameterType="com.github.oldtoys.system.domain.SysOfficeUser" resultMap="SysOfficeUserResult">
+        <include refid="selectSysOfficeUserVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="officeId != null "> and office_id = #{officeId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="inheritRole != null "> and inherit_role = #{inheritRole}</if>
+        </where>
+    </select>
+    <sql id="officeUserColumns">
+        a.id AS id,
+        a.office_id AS 'officeId',
+        a.user_id AS 'userId',
+        a.inherit_role AS 'inheritRole'
+    </sql>
+    
+    
+    <sql id="officeUserJoinColumns">
+        ,
+        a1.id AS 'office.id',
+        a1.`name` AS 'office.name',
+        a1.pid AS 'office.pid',
+        a1.pids AS 'office.pids',
+        a1.remarks AS 'office.remarks',
+        
+        a2.id AS 'user.id',
+        a2.birthday AS 'user.birthday',
+        a2.email AS 'user.email',
+        a2.gender AS 'user.gender',
+        a2.mobile AS 'user.mobile',
+        a2.`name` AS 'user.name',
+        a2.`password` AS 'user.password',
+        a2.salt AS 'user.salt',
+        a2.`status` AS 'user.status',
+        a2.user_name AS 'user.userName'
+    </sql>
+    <sql id="officeUserJoins">
+        LEFT JOIN sys_office a1 ON a.office_id = a1.id
+        LEFT JOIN sys_user a2 ON a.user_id = a2.id
+    </sql>
+    
+    <select id="findById" resultType="com.github.oldtoys.system.domain.SysOfficeUser">
+        SELECT 
+        <include refid="officeUserColumns"/> 
+        <include refid="officeUserJoinColumns"/> 
+        from	sys_office_user a
+        <include refid="officeUserJoins"/>
+        <where>
+            a.id = #{OfficeUserId}
+        </where>
+    </select>
+    <select id="findOfficeUserByOfficeUserId" resultType="com.github.oldtoys.system.domain.SysOfficeUser">
+        SELECT 
+        <include refid="officeUserColumns"/>  
+        <include refid="officeUserJoinColumns"/>     
+        from	sys_office_user a
+        <include refid="officeUserJoins"/>
+        <where>
+            a.id = #{OfficeUserId}
+        </where>
+    </select>
+    <select id="findOfficeUserListByUserId" resultType="com.github.oldtoys.system.domain.SysOfficeUser">
+        SELECT 
+        <include refid="officeUserColumns"/>     
+        <include refid="officeUserJoinColumns"/>  
+        from	sys_office_user a
+        <include refid="officeUserJoins"/>
+        <where>
+            a2.id = #{userId}
+        </where>
+    </select>
+    <select id="findOfficeUserListByUserName" resultType="com.github.oldtoys.system.domain.SysOfficeUser">
+        SELECT 
+        <include refid="officeUserColumns"/> 
+        <include refid="officeUserJoinColumns"/>      
+        from	sys_office_user a
+        <include refid="officeUserJoins"/>
+        <where>
+            a2.user_name = #{userName}
+        </where>
+    </select>
+    
+</mapper>

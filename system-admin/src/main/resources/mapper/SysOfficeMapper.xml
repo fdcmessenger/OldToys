@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.oldtoys.system.mapper.SysOfficeMapper">
+    
+    <resultMap type="com.github.oldtoys.system.domain.SysOffice" id="SysOfficeResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="pid"    column="pid"    />
+        <result property="pids"    column="pids"    />
+        <result property="sort"    column="sort"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="useable"    column="useable"    />
+    </resultMap>
+    <sql id="parentJoin">
+        LEFT JOIN sys_office a1 ON a1.id = a.pid
+    </sql>
+    <sql id="parentSelect">
+        a1.id as "parentId",
+        a1.name as "parentName"
+    </sql>
+    
+    <resultMap id="parentResultMap" extends="SysOfficeResult" type="com.github.oldtoys.system.domain.SysOffice">
+        <result property="parent.id" column="parentId" />
+        <result property="parent.name" column="parentName" />
+    </resultMap>
+    <sql id="selectSysOfficeVo">
+        select id, name, pid, pids, sort, remarks, useable from sys_office
+    </sql>
+	
+    <select id="selectSysOfficeList" parameterType="com.github.oldtoys.system.domain.SysOffice" resultMap="SysOfficeResult">
+        <include refid="selectSysOfficeVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="name != null  and name != '' "> and name = #{name}</if>
+            <if test="pid != null "> and pid = #{pid}</if>
+            <if test="pids != null  and pids != '' "> and pids = #{pids}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
+            <if test="useable != null "> and useable = #{useable}</if>
+        </where>
+    </select>
+   
+
+    <select id="findById" resultMap="parentResultMap" >
+        SELECT  a.* ,
+        <include refid="parentSelect"/>
+        FROM sys_office a   
+        <include refid="parentJoin"/>
+         
+        WHERE a.id = #{id}
+    </select>
+    <select id="findByPid" resultMap="parentResultMap" >
+        SELECT  a.* ,
+        <include refid="parentSelect"/>
+        FROM sys_office a   
+        <include refid="parentJoin"/>
+        WHERE a.pid = #{pid}
+    </select>
+    <select id="findByParentIdsLike" resultMap="parentResultMap" >
+        SELECT  a.* ,
+        <include refid="parentSelect"/>
+        FROM sys_office a   
+        <include refid="parentJoin"/>
+        WHERE a.pids like concat(#{pids},'%')
+    </select>
+    <update id="batchReplacePidsPath">
+        UPDATE sys_office SET 
+        pids=REPLACE(pids,#{oldPath},#{newPath})
+        WHERE pids like concat(#{oldPath},'%')
+    </update>
+</mapper>

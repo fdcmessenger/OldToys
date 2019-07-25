@@ -3,19 +3,19 @@ package com.github.oldtoys.system.domain;
 import com.gitee.fdc.base.entity.BaseEntity;
 import javax.persistence.Table;
 import lombok.Data;
-import com.gitee.fdc.kits.StringUtils;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Transient;
 
 /**
- * 系统角色表 sys_role
+ * 部门用户表 sys_office_user
  *
  * @author Mr.fdc
- * @date 2019-07-24T17:43:17.326+08:00
+ * @date 2019-07-25T11:39:49.437+08:00
  */
 @Data
-@Table(name = "sys_role")
-public class SysRole extends BaseEntity<Integer> {
+@Table(name = "sys_office_user")
+public class SysOfficeUser extends BaseEntity<Integer> {
 
     /**
      * @TODO 如需要，请自行重新生成
@@ -27,22 +27,24 @@ public class SysRole extends BaseEntity<Integer> {
     private Integer id;
 
     /**
-     * 角色名称
+     * 部门ID
      */
-    private String name;
-    private String roleKey;
+    private Integer officeId;
     /**
-     *     */
-    private Integer isAdmin;
+     * 用户ID
+     */
+    private Integer userId;
 
     /**
-     * 备注
+     * 是否继承部门角色
      */
-    private String remarks;
-    /**
-     * 是否可用
-     */
-    private Integer useable;
+    private Integer inheritRole;
+
+    @Transient
+    private SysOffice office;
+    @Transient
+    private SysUser user;
+
     /**
      * 这是个参考样例，以逗号分隔的字符串数据 public String[] getMultiSelectFieldArray() { String[]
      * sa = StringUtils.split(multiSelectField, ","); return sa == null ? new

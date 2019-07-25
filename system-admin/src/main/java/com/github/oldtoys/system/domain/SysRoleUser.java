@@ -3,46 +3,43 @@ package com.github.oldtoys.system.domain;
 import com.gitee.fdc.base.entity.BaseEntity;
 import javax.persistence.Table;
 import lombok.Data;
-import com.gitee.fdc.kits.StringUtils;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Transient;
 
 /**
- * 系统角色表 sys_role
+ * 角色用户表 sys_role_user
  *
  * @author Mr.fdc
- * @date 2019-07-24T17:43:17.326+08:00
+ * @date 2019-07-25T11:39:41.472+08:00
  */
 @Data
-@Table(name = "sys_role")
-public class SysRole extends BaseEntity<Integer> {
+@Table(name = "sys_role_user")
+public class SysRoleUser extends BaseEntity<Integer> {
+
+    private static final long serialVersionUID = -7646627152377971032L;
 
     /**
      * @TODO 如需要，请自行重新生成
      */
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**
-     * 角色名称
+     * 角色ID
      */
-    private String name;
-    private String roleKey;
+    private Integer roleId;
     /**
-     *     */
-    private Integer isAdmin;
+     * 用户ID
+     */
+    private Integer userId;
+    @Transient
+    private SysRole role;
+    @Transient
+    private SysUser user;
 
-    /**
-     * 备注
-     */
-    private String remarks;
-    /**
-     * 是否可用
-     */
-    private Integer useable;
     /**
      * 这是个参考样例，以逗号分隔的字符串数据 public String[] getMultiSelectFieldArray() { String[]
      * sa = StringUtils.split(multiSelectField, ","); return sa == null ? new

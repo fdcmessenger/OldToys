@@ -5,13 +5,14 @@
     <resultMap type="com.github.oldtoys.system.domain.SysRole" id="SysRoleResult">
         <result property="id"    column="id"    />
         <result property="name"    column="name"    />
+        <result property="roleKey"    column="role_key"    />
         <result property="isAdmin"    column="is_admin"    />
         <result property="remarks"    column="remarks"    />
         <result property="useable"    column="useable"    />
     </resultMap>
 	
     <sql id="selectSysRoleVo">
-        select id, name, is_admin, remarks, useable from sys_role
+        select id, name,role_key, is_admin, remarks, useable from sys_role
     </sql>
 	
     <select id="selectSysRoleList" parameterType="com.github.oldtoys.system.domain.SysRole" resultMap="SysRoleResult">
