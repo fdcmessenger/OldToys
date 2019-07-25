@@ -12,12 +12,13 @@ import javax.annotation.PostConstruct;
 
 /**
  * 系统菜单 服务层实现
- * 
+ *
  * @author Mr.fdc
  * @date 2019-07-24T16:52:47.753+08:00
  */
 @Service
 public class SysMenuServiceImpl extends BaseTreeServiceImpl<SysMenu, Integer> implements ISysMenuService {
+
     @Autowired
     private SysMenuMapper sysMenuMapper;
 
@@ -26,16 +27,25 @@ public class SysMenuServiceImpl extends BaseTreeServiceImpl<SysMenu, Integer> im
         super.init(SysMenu.class, sysMenuMapper);
     }
 
-	
     /**
      * 查询系统菜单列表
-     * 
+     *
      * @param sysMenu 系统菜单信息
      * @return 系统菜单集合
      */
     @Override
-    public List<SysMenu> selectSysMenuList(SysMenu sysMenu){
+    public List<SysMenu> selectSysMenuList(SysMenu sysMenu) {
         this.pageAble();
-	return sysMenuMapper.selectSysMenuList(sysMenu);
+        return sysMenuMapper.selectSysMenuList(sysMenu);
+    }
+
+    @Override
+    public boolean checkMeunLevelOk(SysMenu menu) {
+        SysMenu p = this.findById(menu.getPid());
+        if (p.getPid() == null || p.getPid() == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

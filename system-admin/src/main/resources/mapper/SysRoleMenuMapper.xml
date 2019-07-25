@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.oldtoys.system.mapper.SysRoleMenuMapper">
+    
+    <resultMap type="com.github.oldtoys.system.domain.SysRoleMenu" id="SysRoleMenuResult">
+        <result property="id"    column="id"    />
+        <result property="roleId"    column="role_id"    />
+        <result property="menuId"    column="menu_id"    />
+    </resultMap>
+	
+    <sql id="selectSysRoleMenuVo">
+        select id, role_id, menu_id from sys_role_menu
+    </sql>
+	
+    <select id="selectSysRoleMenuList" parameterType="com.github.oldtoys.system.domain.SysRoleMenu" resultMap="SysRoleMenuResult">
+        <include refid="selectSysRoleMenuVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+            <if test="roleId != null "> and role_id = #{roleId}</if>
+            <if test="menuId != null "> and menu_id = #{menuId}</if>
+        </where>
+    </select>
+    
+    <sql id="roleMenuColumns">
+        a.id AS id,
+        a.role_id AS 'roleId',
+        a.menu_id AS 'menuId'
+    </sql>
+    
+    
+    <sql id="roleMenuJoinColumns">
+        ,
+        a1.id AS 'role.id',
+        a1.`name` AS 'role.name',
+        a1.remarks AS 'role.remarks',
+       
+        a3.id AS 'menu.id',
+        a3.pid AS 'menu.pid',
+        a3.`name` AS 'menu.name',
+        a3.href AS 'menu.href',
+        a3.icon AS 'menu.icon',
+        a3.is_show AS 'menu.isShow',
+        a3.useable AS 'menu.useable',
+        a3.permission AS 'menu.permission'
+    </sql>
+    <sql id="roleMenuJoins">
+        LEFT JOIN sys_role a1 ON a.role_id = a1.id
+        LEFT JOIN sys_menu a3 ON a.menu_id = a3.id
+    </sql>
+    <select id="findRoleMenuByRoleMenuId" resultType="com.github.oldtoys.system.domain.SysRoleMenu">
+        SELECT 
+        <include refid="roleMenuColumns"/>  
+        <include refid="roleMenuJoinColumns"/>     
+        from	sys_role_menu a
+        <include refid="roleMenuJoins"/>
+        <where>
+            a.id = #{RoleMenuId}
+        </where>
+    </select>
+
+    <select id="findRoleMenuListByRoleId" resultType="com.github.oldtoys.system.domain.SysRoleMenu">
+        SELECT 
+        <include refid="roleMenuColumns"/>     
+        <include refid="roleMenuJoinColumns"/>  
+        from	sys_role_menu a
+        <include refid="roleMenuJoins"/>
+        <where>
+            a1.id = #{roleId}
+        </where>
+    </select>
+    <select id="findRoleMenuListByRoleIds" resultType="com.github.oldtoys.system.domain.SysRoleMenu">
+        SELECT 
+        <include refid="roleMenuColumns"/>     
+        <include refid="roleMenuJoinColumns"/>  
+        from	sys_role_menu a
+        <include refid="roleMenuJoins"/>
+        <where>
+            a1.id in 
+            <foreach collection="roleIds" index="index" item="item" open="(" separator="," close=")" >  
+                #{item}  
+            </foreach> 
+        </where>
+    </select>
+  
+
+    <update id="deleteUnusedRoleMenus">
+        DELETE from sys_role_menu   WHERE id in (
+        SELECT * from (
+        SELECT rm.id from sys_role_menu rm where rm.role_id=#{roleId}
+        <if test="menuIds != null  and menuIds.length>0">
+            and rm.menu_id not in 
+            <foreach collection="menuIds" index="index" item="item" open="(" separator="," close=")" >  
+                #{item}  
+            </foreach> 
+        </if>
+        ) q
+        )
+    </update>
+        
+    <update id="insertNewRoleMenus">
+        INSERT INTO sys_role_menu  (role_id,menu_id) (
+
+        SELECT #{roleId},t.id from sys_menu t where t.id in (
+        SELECT
+        um.id
+        FROM
+        sys_menu um
+        WHERE
+        um.id IN 
+        <foreach collection="menuIds" index="index" item="item" open="(" separator="," close=")" >  
+            #{item}  
+        </foreach> 
+        AND um.id NOT IN (
+        SELECT
+        rm.menu_id
+        FROM
+        sys_role_menu rm
+        WHERE
+        rm.role_id = #{roleId}
+        )))
+    </update>
+
+</mapper>
