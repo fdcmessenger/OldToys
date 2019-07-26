@@ -34,17 +34,7 @@
     <select id="selectSysMenuList" parameterType="com.github.oldtoys.system.domain.SysMenu" resultMap="parentResultMap">
         <include refid="selectSysMenuVo"/>
         <where>  
-            <if test="id != null "> and id = #{id}</if>
             <if test="name != null  and name != '' "> and name = #{name}</if>
-            <if test="pid != null "> and pid = #{pid}</if>
-            <if test="pids != null  and pids != '' "> and pids = #{pids}</if>
-            <if test="sort != null "> and sort = #{sort}</if>
-            <if test="remarks != null  and remarks != '' "> and remarks = #{remarks}</if>
-            <if test="useable != null "> and is_enable = #{useable}</if>
-            <if test="href != null  and href != '' "> and href = #{href}</if>
-            <if test="icon != null  and icon != '' "> and icon = #{icon}</if>
-            <if test="isShow != null "> and is_show = #{isShow}</if>
-            <if test="permission != null  and permission != '' "> and permission = #{permission}</if>
         </where>
     </select>
    <select id="findById" resultMap="parentResultMap" >
