@@ -19,30 +19,31 @@ import com.github.oldtoys.system.service.ISysMenuService;
 
 /**
  * 系统菜单 信息操作处理
- * 
+ *
  * @author Mr.fdc
  * @date 2019-07-24T16:52:47.753+08:00
  */
 @Slf4j
 @Controller
 @RequestMapping("/system/sysMenu")
-public class SysMenuController{
+public class SysMenuController {
+
     private String prefix = "system/sysMenu";
-	
+
     @Autowired
     private ISysMenuService sysMenuService;
-	
+
     @GetMapping()
-    public String sysMenu(){
+    public String sysMenu() {
         return prefix + "/sysMenu";
     }
-	
+
     /**
      * 查询系统菜单列表
      */
     @PostMapping("/list")
     @ResponseBody
-    public PageInfoBT list(SysMenu sysMenu){
+    public PageInfoBT list(SysMenu sysMenu) {
         List<SysMenu> list = sysMenuService.selectSysMenuList(sysMenu);
         return new PageInfoBT(list);
     }
@@ -51,49 +52,89 @@ public class SysMenuController{
      * 新增系统菜单
      */
     @GetMapping("/add")
-    public String add(ModelMap mmap){
+    public String add(ModelMap mmap) {
         SysMenu sysMenu = new SysMenu();
         mmap.put("sysMenu", sysMenu);
         return prefix + "/form";
     }
-	
+
     /**
      * 修改系统菜单
      */
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") Integer id, ModelMap mmap){
-	SysMenu sysMenu = sysMenuService.findById(id);
-	mmap.put("sysMenu", sysMenu);
+    public String edit(@PathVariable("id") Integer id, ModelMap mmap) {
+        SysMenu sysMenu = sysMenuService.findById(id);
+        mmap.put("sysMenu", sysMenu);
         return prefix + "/form";
     }
-	
+
     /**
      * 修改保存系统菜单
      */
     @PostMapping("/save")
     @ResponseBody
-    public Result save(SysMenu sysMenu){		
+    public Result save(SysMenu sysMenu) {
         int rs = sysMenuService.save(sysMenu);
         Result rt = rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("保存失败");
         return rt;
     }
-	
+
     /**
      * 删除系统菜单
      */
-    @PostMapping( "/delete")
+    @PostMapping("/delete")
     @ResponseBody
-    public Result remove(@RequestParam String ids){		
+    public Result remove(@RequestParam String ids) {
         int rs = sysMenuService.deleteByIds(ids);
         return rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("删除失败");
     }
+
     /**
      * 恢复系统菜单
      */
     @PostMapping("/undelete")
     @ResponseBody
-    public Result unDelete(@RequestParam Integer id) {        
-      int rs = sysMenuService.unDeleteById(id);
-      return rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("恢复失败");
+    public Result unDelete(@RequestParam Integer id) {
+        int rs = sysMenuService.unDeleteById(id);
+        return rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("恢复失败");
+    }
+
+    @PostMapping("/enable")
+    @ResponseBody
+    public Result enable(@RequestParam Integer menuId) {
+        SysMenu m = new SysMenu();
+        m.setId(menuId);
+        m.setUseable(true);
+        int rs = sysMenuService.updateByPrimaryKeySelective(m);
+        return rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("启用失败");
+    }
+
+    @PostMapping("/disable")
+    @ResponseBody
+    public Result disable(@RequestParam Integer menuId) {
+        SysMenu m = new SysMenu();
+        m.setId(menuId);
+        m.setUseable(false);
+        int rs = sysMenuService.updateByPrimaryKeySelective(m);
+        return rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("停用失败");
+    }
+    @PostMapping("/show")
+    @ResponseBody
+    public Result show(@RequestParam Integer menuId) {
+        SysMenu m = new SysMenu();
+        m.setId(menuId);
+        m.setIsShow(true);
+        int rs = sysMenuService.updateByPrimaryKeySelective(m);
+        return rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("设置显示失败");
+    }
+
+    @PostMapping("/hide")
+    @ResponseBody
+    public Result hide(@RequestParam Integer menuId) {
+        SysMenu m = new SysMenu();
+        m.setId(menuId);
+        m.setIsShow(false);
+        int rs = sysMenuService.updateByPrimaryKeySelective(m);
+        return rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("设置隐藏失败");
     }
 }

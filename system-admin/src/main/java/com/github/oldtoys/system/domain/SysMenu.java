@@ -31,7 +31,7 @@ public class SysMenu extends TreeEntity<SysMenu> {
     /**
      * 是否显示
      */
-    private Integer isShow;
+    private Boolean isShow;
     /**
      * 权限标识
      */
