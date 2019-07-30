@@ -5,6 +5,7 @@
     <resultMap type="com.github.oldtoys.system.domain.SysMenu" id="SysMenuResult">
         <result property="id"    column="id"    />
         <result property="name"    column="name"    />
+        <result property="menuType"    column="menu_type"    />
         <result property="pid"    column="pid"    />
         <result property="pids"    column="pids"    />
         <result property="sort"    column="sort"    />
@@ -28,7 +29,7 @@
         <result property="parent.name" column="parentName" />
     </resultMap>	
     <sql id="selectSysMenuVo">
-        select id, name, pid, pids, sort, remarks, useable, href, icon, is_show, permission from sys_menu
+        select id, name,menu_type, pid, pids, sort, remarks, useable, href, icon, is_show, permission from sys_menu
     </sql>
 	
     <select id="selectSysMenuList" parameterType="com.github.oldtoys.system.domain.SysMenu" resultMap="parentResultMap">

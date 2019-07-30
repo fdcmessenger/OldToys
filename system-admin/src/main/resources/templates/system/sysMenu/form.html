@@ -7,74 +7,101 @@
 
     <form id="sysMenuForm" novalidate=true th:object="${sysMenu}">
         <input id="id" name="id" th:field="*{id}"  type="hidden">
-                        <div class="form-row">
+        <div class="form-row">
+            <div class="col form-group">
+                <input type="hidden" id="treeId" name="pid" th:field="*{pid}">
+                <div class="input-group">
+                    <input class="form-control" type="text" onclick="selectMenuTree()" id="treeName" readonly="true" th:value="${sysMenu.parent == null ? '无' : sysMenu.parent.name}">
+                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
             <div class="col form-group">
                 <input type="text" id="name" name="name" th:field="*{name}" class="form-control" placeholder="名称">
             </div>
         </div>
-
-                                <div class="form-row">
+        <div class="form-row">
             <div class="col form-group">
-                <input type="text" id="pid" name="pid" th:field="*{pid}" class="form-control" placeholder="父ID">
+                <!--<input type="text" id="menuType" name="menuType" th:field="*{menuType}" class="form-control" placeholder="菜单类型">-->
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input radio-box" type="radio" id="menuType1" th:field="*{menuType}" name="menuType" value="M" >
+                    <label class="form-check-label" for="menuType1">目录</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input radio-box" type="radio" id="menuType2" th:field="*{menuType}" name="menuType" value="M" >
+                    <label class="form-check-label" for="menuType2">菜单</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input radio-box" type="radio" id="menuType3" th:field="*{menuType}" name="menuType" value="M" >
+                    <label class="form-check-label" for="menuType3">按钮</label>
+                </div>
             </div>
         </div>
 
-                                <div class="form-row">
-            <div class="col form-group">
-                <input type="text" id="pids" name="pids" th:field="*{pids}" class="form-control" placeholder="父亲路径">
-            </div>
-        </div>
 
-                                <div class="form-row">
+
+
+        <div class="form-row">
             <div class="col form-group">
                 <input type="text" id="sort" name="sort" th:field="*{sort}" class="form-control" placeholder="排序">
             </div>
         </div>
 
-                                <div class="form-row">
+        <div class="form-row">
             <div class="col form-group">
-                <input type="text" id="remarks" name="remarks" th:field="*{remarks}" class="form-control" placeholder="备注">
+                <textarea  id="remarks" name="remarks" th:field="*{remarks}" autocomplete="off" maxlength="500" class="form-control" rows="3" placeholder="备注"></textarea>
             </div>
         </div>
 
-                                <div class="form-row">
+        <div class="form-row">
             <div class="col form-group">
-                <input type="text" id="isEnable" name="isEnable" th:field="*{isEnable}" class="form-control" placeholder="是否启用">
+                <div class="form-check">
+                    <input class="form-check-input check-box" type="checkbox"  id="useable" name="useable" th:field="*{useable}">
+                    <label class="form-check-label" for="useable">
+                        是否启用
+                    </label>
+                </div>
             </div>
         </div>
 
-                                <div class="form-row">
+        <div class="form-row">
             <div class="col form-group">
                 <input type="text" id="href" name="href" th:field="*{href}" class="form-control" placeholder="网址链接">
             </div>
         </div>
 
-                                <div class="form-row">
+        <div class="form-row">
             <div class="col form-group">
                 <input type="text" id="icon" name="icon" th:field="*{icon}" class="form-control" placeholder="图标">
             </div>
         </div>
 
-                                <div class="form-row">
+        <div class="form-row">
             <div class="col form-group">
-                <input type="text" id="isShow" name="isShow" th:field="*{isShow}" class="form-control" placeholder="是否显示">
+                <div class="form-check">
+                    <input class="form-check-input check-box" type="checkbox"  id="isShow" name="isShow" th:field="*{isShow}">
+                    <label class="form-check-label" for="isShow">
+                        是否显示
+                    </label>
+                </div>
             </div>
         </div>
 
-                                <div class="form-row">
+        <div class="form-row">
             <div class="col form-group">
                 <input type="text" id="permission" name="permission" th:field="*{permission}" class="form-control" placeholder="权限标识">
             </div>
         </div>
 
-            
+
 
 
 
     </form>
     <div th:replace="include :: footer"></div>
     <script type="text/javascript">
-       var prefix ="/system/sysMenu";
+        var prefix = "/system/sysMenu";
         $("#sysMenuForm").validate({
             rules: {
                 intField: {
@@ -86,7 +113,40 @@
                 }
             }
         });
-
+        function menuVisible(menuType) {
+            if (menuType === "M") {
+                $("#href").parents(".form-row").hide();
+                $("#permission").parents(".form-row").hide();
+                $("#icon").parents(".form-row").show();
+            } else if (menuType === "C") {
+                $("#href").parents(".form-row").show();
+                $("#permission").parents(".form-row").show();
+                $("#icon").parents(".form-row").hide();
+            } else if (menuType === "F") {
+                $("#href").parents(".form-row").hide();
+                $("#permission").parents(".form-row").show();
+                $("#icon").parents(".form-row").hide();
+            }
+        }
+        /*菜单管理-新增-选择菜单树*/
+        function selectMenuTree() {
+            var treeId = $("#treeId").val();
+            var menuId = treeId > 0 ? treeId : 1;
+            var url = prefix + "/selectMenuTree/" + menuId;
+            var options = {
+                title: '菜单选择',
+                width: "380",
+                url: url,
+                callBack: doSubmit
+            };
+            $.popup.openOptions(options);
+        }
+        function doSubmit(index, layero) {
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            layer.close(index);
+        }
         function submitHandler() {
             if ($.validate.form()) {
                 var data = $("#sysMenuForm").serializeArray();
@@ -97,6 +157,13 @@
                 });
             }
         }
+        $(function () {
+            $('input').on('ifChecked',
+                    function (event) {
+                        var menuType = $(event.target).val();
+                        menuVisible(menuType);
+                    });
+        });
     </script>
 </body>
 </html>

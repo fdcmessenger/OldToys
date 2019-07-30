@@ -14,12 +14,15 @@ import lombok.Data;
 @Table(name = "sys_menu")
 public class SysMenu extends TreeEntity<SysMenu> {
 
-    private static final long serialVersionUID = 7437467930929390845L;
+    private static final long serialVersionUID = 88169192283031L;
+
 
     /**
      * 名称
      */
     private String name;
+    
+    private String menuType;
     /**
      * 网址链接
      */

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gitee.fdc.web.ajax.Result;
 import com.gitee.fdc.web.ajax.ResultGenerator;
 import com.gitee.fdc.web.page.PageInfoBT;
+import com.gitee.fdc.web.ztree.ZTreeNode;
 import lombok.extern.slf4j.Slf4j;
 import com.github.oldtoys.system.domain.SysMenu;
 import com.github.oldtoys.system.service.ISysMenuService;
@@ -46,6 +47,38 @@ public class SysMenuController {
     public PageInfoBT list(SysMenu sysMenu) {
         List<SysMenu> list = sysMenuService.selectSysMenuList(sysMenu);
         return new PageInfoBT(list);
+    }
+
+    @GetMapping("/selectMenuTree/{menuId}")
+    public String selectMenuTree(@PathVariable("menuId") Integer menuId, ModelMap mmap) {
+        mmap.put("menu", sysMenuService.findById(menuId));
+        return prefix + "/tree";
+    }
+
+    @ResponseBody
+    @GetMapping("/menuTreeData")
+    public List<ZTreeNode> treeData() {
+//        List<Map<String, Object>> mapList = Lists.newArrayList();
+        List<SysMenu> list = sysMenuService.findAll();
+        
+        return sysMenuService.convertTreeNodes(list);
+//        List<ZTreeNode> zl = ZTreeUtils.ConvertFromBaseTree(list);
+//        return zl;
+//        for (int i = 0; i < list.size(); i++) {
+//            SysMenu e = list.get(i);
+//            if (StringUtils.isEmpty(extId)
+//                    || (extId != null && !extId.equals(e.getId()) && e.getPids().indexOf("," + extId + ",") == -1)) {
+//                if (isShowHide != null && isShowHide.equals("0") && e.getIsShow().equals("0")) {
+//                    continue;
+//                }
+//                Map<String, Object> map = Maps.newHashMap();
+//                map.put("id", e.getId());
+//                map.put("pId", e.getPid());
+//                map.put("name", e.getName());
+//                mapList.add(map);
+//            }
+//        }
+//        return mapList;
     }
 
     /**
@@ -118,6 +151,7 @@ public class SysMenuController {
         int rs = sysMenuService.updateByPrimaryKeySelective(m);
         return rs > 0 ? ResultGenerator.genSuccessResult() : ResultGenerator.genFailResult("停用失败");
     }
+
     @PostMapping("/show")
     @ResponseBody
     public Result show(@RequestParam Integer menuId) {

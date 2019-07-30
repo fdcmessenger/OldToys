@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+    <head>
+    <th:block th:include="include :: head('菜单树选择')" />
+    <th:block th:include="include :: ztree-css" />
+</head>
+<style>
+    body{height:auto;font-family: "Microsoft YaHei";}
+    button{font-family: "SimSun","Helvetica Neue",Helvetica,Arial;}
+    /* 树搜索相关 */
+    .treeSearchInput {padding:13px 0 0 20px;}
+    .treeSearchInput label {padding:5px 0 3px 0;font-size:13px;font-weight:normal;vertical-align:middle;}
+    .treeSearchInput input {width:145px;vertical-align:middle;line-height:24px;height:26px;border:1px solid #bbb;padding:0 4px;}
+    .treeSearchInput button {border:1px solid #bbb;vertical-align:middle;height:26px;height:26px\9;font-size:13px;background:#efefef;padding:0 8px;}
+    .treeShowHideButton {position:absolute;right:8px;top:2px;font-size:12px;color:#333;z-index:3;}
+    .treeShowHideButton label {cursor:pointer;}
+    .treeExpandCollapse {float:right;margin:6px 5px;padding:5px;font-size:12px;color:#333;position:relative;z-index:2;background:#fff;}
+    .treeExpandCollapse a {text-decoration:none;color:#333}
+    .treeselect.ztree {padding:10px 20px;}
+
+    /** 用户管理 样式布局 **/
+    .box {
+        position: relative;
+        border-radius: 3px;
+        background: #ffffff;
+        border-top: 3px solid #d2d6de;
+        margin-bottom: 20px;
+        width: 100%;
+        box-shadow: 0 1px 1px rgba(0,0,0,0.1)
+    }
+
+    .box-header:before,.box-body:before,.box-footer:before,.box-header:after,.box-body:after,.box-footer:after {
+        content: " ";
+        display: table
+    }
+
+    .box-header:after,.box-body:after,.box-footer:after {
+        clear: both
+    }
+
+    .btn-box-tool {
+        padding: 5px;
+        font-size: 12px;
+        background: transparent;
+        color: #97a0b3;
+    }
+
+    .open .btn-box-tool,
+    .btn-box-tool:hover {
+        color: #606c84;
+    }
+
+    .box-main {
+        margin: 0;
+        border: 0;
+        padding-top: 2px;
+        border-radius: 0;
+        box-shadow: none
+    }
+
+    .box-main>.box-header {
+        border-bottom: 1px solid #eee;
+        padding: 12px 10px 2px 15px
+    }
+
+    .box-header .box-title {
+        display: inline-block;
+        font-size: 18px;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .box-main>.box-header .box-title {
+        font-size: 16px;
+        margin-bottom: 13px;
+        float: left
+    }
+
+    .box-main>.box-header .box-title .fa {
+        font-size: 14px;
+        padding-right: 3px;
+        margin-top: -2px
+    }
+
+    .box-main>.box-header .box-tools {
+        position: relative;
+        top: -5px;
+        right: 0
+    }
+
+    .box-main>.box-header .box-tools .btn {
+        padding: 3px 10px 5px 10px;
+        font-size: 14px;
+        margin-bottom: 2px
+    }
+
+    .box-main>.box-header .box-tools .btn-box-tool {
+        padding: 4px 2px
+    }
+
+    .box-main form>.box-footer,.nav-main form>.box-footer {
+        background: #fafafa
+    }
+
+    .box-main form>.box-footer .row,.nav-main form>.box-footer .row {
+        margin: 5px 0 5px -25px
+    }
+</style>
+<body class="hold-transition box box-main">
+    <input id="treeId"   name="treeId"    type="hidden" th:value="${menu.id}"/>
+    <input id="treeName" name="treeName"  type="hidden" th:value="${menu.name}"/>
+    <div class="wrapper"><div class="treeShowHideButton" onclick="$.tree.toggleSearch();">
+            <label id="btnShow" title="显示搜索" style="display:none;">︾</label>
+            <label id="btnHide" title="隐藏搜索">︽</label>
+        </div>
+        <div class="treeSearchInput" id="search">
+            <label for="keyword">关键字：</label><input type="text" class="empty" id="keyword" maxlength="50">
+            <button class="btn" id="btn" onclick="$.tree.searchNode()"> 搜索 </button>
+        </div>
+        <div class="treeExpandCollapse">
+            <a href="#" onclick="$.tree.expand()">展开</a> /
+            <a href="#" onclick="$.tree.collapse()">折叠</a>
+        </div>
+        <div id="tree" class="ztree treeselect"></div>
+    </div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: ztree-js" />
+<script th:inline="javascript">
+    $(function () {
+        var url = "/system/sysMenu/menuTreeData";
+        var options = {
+            url: url,
+            expandLevel: 1,
+            onClick: zOnClick
+        };
+        $.tree.init(options);
+    });
+
+    function zOnClick(event, treeId, treeNode) {
+        var treeId = treeNode.id;
+        var treeName = treeNode.name;
+        $("#treeId").val(treeId);
+        $("#treeName").val(treeName);
+    }
+</script>
+</body>
+</html>
