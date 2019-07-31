@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
-    <th:block th:include="include :: head('系统菜单')" />
+    <th:block th:include="include :: head('系统菜单列表')" />
 </head>
 <body>
 
@@ -12,7 +12,7 @@
                 <input type="hidden" id="treeId" name="pid" th:field="*{pid}">
                 <div class="input-group">
                     <input class="form-control" type="text" onclick="selectMenuTree()" id="treeName" readonly="true" th:value="${sysMenu.parent == null ? '无' : sysMenu.parent.name}">
-                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    <span class="input-group-addon"><i class="fa fa-search fa-2x"></i></span>
                 </div>
             </div>
         </div>
@@ -74,6 +74,11 @@
         <div class="form-row">
             <div class="col form-group">
                 <input type="text" id="icon" name="icon" th:field="*{icon}" class="form-control" placeholder="图标">
+                <div class="ms-parent" style="width: 100%;">
+                    <div class="icon-drop animated flipInX" style="display: none;max-height:200px;overflow-y:auto">
+                        <div data-th-include="system/sysMenu/icon"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -158,6 +163,19 @@
             }
         }
         $(function () {
+            $("input[name='icon']").focus(function () {
+                $(".icon-drop").show();
+            });
+            $("#sysMenuForm").click(function (event) {
+                var obj = event.srcElement || event.target;
+                if (!$(obj).is("input[name='icon']")) {
+                    $(".icon-drop").hide();
+                }
+            });
+            $(".icon-drop").find(".ico-list i").on("click",
+                    function () {
+                        $('#icon').val($(this).attr('class'));
+                    });
             $('input').on('ifChecked',
                     function (event) {
                         var menuType = $(event.target).val();

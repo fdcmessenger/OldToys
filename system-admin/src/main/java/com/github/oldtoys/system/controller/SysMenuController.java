@@ -60,7 +60,7 @@ public class SysMenuController {
     public List<ZTreeNode> treeData() {
 //        List<Map<String, Object>> mapList = Lists.newArrayList();
         List<SysMenu> list = sysMenuService.findAll();
-        
+
         return sysMenuService.convertTreeNodes(list);
 //        List<ZTreeNode> zl = ZTreeUtils.ConvertFromBaseTree(list);
 //        return zl;
@@ -79,6 +79,11 @@ public class SysMenuController {
 //            }
 //        }
 //        return mapList;
+    }
+
+    @GetMapping("/icon")
+    public String icon() {
+        return prefix + "/icon";
     }
 
     /**
