@@ -4,75 +4,44 @@
     <th:block th:include="include :: head('系统菜单列表')" />
 </head>
 <body>
-
-    <form id="sysMenuForm" novalidate=true th:object="${sysMenu}">
+    <form id="sysMenuForm" novalidate=true th:object="${sysMenu}" >
         <input id="id" name="id" th:field="*{id}"  type="hidden">
-        <div class="form-row">
-            <div class="col form-group">
-                <input type="hidden" id="treeId" name="pid" th:field="*{pid}">
-                <div class="input-group">
-                    <input class="form-control" type="text" onclick="selectMenuTree()" id="treeName" readonly="true" th:value="${sysMenu.parent == null ? '无' : sysMenu.parent.name}">
-                    <span class="input-group-addon"><i class="fa fa-search fa-2x"></i></span>
+        <div class="form-group row">
+            <label for="treeName" class="col-sm-2 col-form-label">上级菜单</label>
+            <input type="hidden" id="treeId" name="pid" th:field="*{pid}">
+            <div class="col-sm-10 input-group">
+                <input class="form-control" type="text" onclick="selectMenuTree()" id="treeName" readonly="true" th:value="${sysMenu.parent == null ? '无' : sysMenu.parent.name}">
+                <span class="input-group-addon"><i class="fa fa-search fa-2x"></i></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label">名称</label>
+            <div class="col-sm-10">
+                <input type="text" id="name" name="name" th:field="*{name}" class=" form-control" placeholder="名称">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label  class="col-sm-2 col-form-label">菜单类型</label>
+            <div class="col-sm-10">
+                <div class="col form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input radio-box" type="radio" id="menuType1" th:field="*{menuType}" name="menuType" value="M" >
+                        <label class="form-check-label" for="menuType1">目录1</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input radio-box" type="radio" id="menuType2" th:field="*{menuType}" name="menuType" value="C" >
+                        <label class="form-check-label" for="menuType2">菜单2</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input radio-box" type="radio" id="menuType3" th:field="*{menuType}" name="menuType" value="F" >
+                        <label class="form-check-label" for="menuType3">按钮3</label>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="form-row">
-            <div class="col form-group">
-                <input type="text" id="name" name="name" th:field="*{name}" class="form-control" placeholder="名称">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col form-group">
-                <!--<input type="text" id="menuType" name="menuType" th:field="*{menuType}" class="form-control" placeholder="菜单类型">-->
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input radio-box" type="radio" id="menuType1" th:field="*{menuType}" name="menuType" value="M" >
-                    <label class="form-check-label" for="menuType1">目录1</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input radio-box" type="radio" id="menuType2" th:field="*{menuType}" name="menuType" value="C" >
-                    <label class="form-check-label" for="menuType2">菜单2</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input radio-box" type="radio" id="menuType3" th:field="*{menuType}" name="menuType" value="F" >
-                    <label class="form-check-label" for="menuType3">按钮3</label>
-                </div>
-            </div>
-        </div>
-
-
-
-
-        <div class="form-row">
-            <div class="col form-group">
-                <input type="text" id="sort" name="sort" th:field="*{sort}" class="form-control" placeholder="排序">
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="col form-group">
-                <textarea  id="remarks" name="remarks" th:field="*{remarks}" autocomplete="off" maxlength="500" class="form-control" rows="3" placeholder="备注"></textarea>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="col form-group">
-                <div class="form-check">
-                    <input class="form-check-input check-box" type="checkbox"  id="useable" name="useable" th:field="*{useable}">
-                    <label class="form-check-label" for="useable">
-                        是否启用
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="col form-group">
-                <input type="text" id="href" name="href" th:field="*{href}" class="form-control" placeholder="网址链接">
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="col form-group">
+        <div class="form-group row">
+            <label for="icon" class="col-sm-2 col-form-label">图标</label>
+            <div class="col-sm-10">
                 <input type="text" id="icon" name="icon" th:field="*{icon}" class="form-control" placeholder="图标">
                 <div class="ms-parent" style="width: 100%;">
                     <div class="icon-drop animated flipInX" style="display: none;max-height:200px;overflow-y:auto">
@@ -80,24 +49,73 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="form-row">
-            <div class="col form-group">
-                <div class="form-check">
-                    <input class="form-check-input check-box" type="checkbox"  id="isShow" name="isShow" th:field="*{isShow}">
-                    <label class="form-check-label" for="isShow">
-                        是否显示
-                    </label>
-                </div>
+        </div>   
+        <div class="form-group row">
+            <label for="href" class="col-sm-2 col-form-label">网址链接</label>
+            <div class="col-sm-10">
+                <input type="text" id="href" name="href" th:field="*{href}" class="form-control" placeholder="网址链接">
             </div>
-        </div>
+        </div>   
 
-        <div class="form-row">
-            <div class="col form-group">
+
+
+
+        <div class="form-group row">
+            <label for="permission" class="col-sm-2 col-form-label">权限标识</label>
+            <div class="col-sm-10">
                 <input type="text" id="permission" name="permission" th:field="*{permission}" class="form-control" placeholder="权限标识">
             </div>
-        </div>
+        </div>   
+
+        <div class="form-group row">
+            <label for="sort" class="col-sm-2 col-form-label">排序</label>
+            <div class="col-sm-10">
+                <input type="text" id="sort" name="sort" th:field="*{sort}" class="form-control" placeholder="排序">
+            </div>
+        </div>   
+
+        <div class="form-group row">
+            <label  class="col-sm-2 col-form-label">是否启用</label>
+            <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                    <input  class="form-check-input radio-box" type="radio" id="useable1" name="useable" value="true" th:field="*{useable}">
+                    <label class="form-check-label"  th:for="useable1">启用</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input radio-box" type="radio" id="useable2" name="useable" value="false" th:field="*{useable}">
+                    <label class="form-check-label"  th:for="useable2">停用</label>
+                </div>
+            </div>
+        </div> 
+        <div class="form-group row">
+            <label  class="col-sm-2 col-form-label">是否显示</label>
+            <div class="col-sm-10">
+                <div class="form-check form-check-inline">
+                    <input  class="form-check-input radio-box" type="radio" id="isShow1" name="isShow" value="true" th:field="*{isShow}">
+                    <label class="form-check-label"  th:for="isShow1">显示</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input radio-box" type="radio" id="isShow2" name="isShow" value="false" th:field="*{isShow}">
+                    <label class="form-check-label"  th:for="isShow2">隐藏</label>
+                </div>
+            </div>
+        </div> 
+
+
+        <div class="form-group row">
+            <label for="remarks" class="col-sm-2 col-form-label">备注</label>
+            <div class="col-sm-10">
+                <textarea  id="remarks" name="remarks" th:field="*{remarks}" autocomplete="off" maxlength="500" class="form-control" rows="3" placeholder="备注"></textarea>
+            </div>
+        </div> 
+
+
+
+
+
+
+
+
 
 
 
