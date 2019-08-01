@@ -6,38 +6,15 @@
 <body>
     <div id="searchArea" class="collapse in"  style="margin-top: 15px;">
         <form id="searchForm">
-            <div class="form-row">
-                <div class="col-auto">
-                    <input id="startTime" name="beginTime" type="text" class="form-control select-time" placeholder="开始时间">
-                </div>
-                <div class="col-auto">
-                    <input id="endTime" name="endTime" type="text" class="form-control select-time" placeholder="截止时间">
-                </div>
-                <div class="col-auto">
-                    <input name="searchTxt" type="text" class="form-control" placeholder="字符串字段">
-                </div>
-                <div class="col-auto">
-                    <button type="button" class="btn btn-primary mb-2" onclick="SysMenu.table.search();"><i class="fas fa-eye"></i>查询</button>
-                    <button type="button" class="btn btn-info mb-2" onclick=" $('#searchForm')[0].reset();;"><i class="fas fa-broom"></i>清空</button>
-                </div>
-            </div>
+
         </form>
     </div>
     <div id="tableToolbar">
         <div class="form-inline " role="form">
-            <button type="button" class="btn btn-outline-success"  data-toggle="tooltip"   title="新建" onclick="SysMenu.table.add();"><i class="fas fa-file-alt"></i></button>
-            <button type="button" class="btn btn-outline-warning" data-toggle="tooltip"   title="修改"  onclick="SysMenu.table.edit();"><i class="fas fa-pencil-alt "></i></button>
+            <button type="button" class="btn btn-outline-success"  data-toggle="tooltip"   title="新建" onclick="SysMenu.table.add(800, 600);"><i class="fas fa-file-alt"></i></button>
+            <button type="button" class="btn btn-outline-warning" data-toggle="tooltip"   title="修改"  onclick="SysMenu.table.edit(800, 600);"><i class="fas fa-pencil-alt "></i></button>
             <button type="button" class="btn btn-outline-danger" data-toggle="tooltip"     title="删除" onclick="SysMenu.table.delete();"><i class="fas fa-trash-alt "></i></button>
-            <a class="btn btn-info" id="expandAllBtn">
-                <i class="fa fa-exchange"></i> 展开/折叠
-            </a>
-            <div class="form-group">
-                <input id="searchKeyWord" name="searchKeyWord" class="form-control" type="text" min="2" minlength="2" placeholder="全文检索">
-            </div>
-            <button  type="button" class="btn btn-outline-secondary"  data-toggle="tooltip"   title="查询" onclick="SysMenu.table.fullTextSearch();"><i class="fas fa-search "></i></button>
-            <button id="searchMore"  type="button" class="btn btn-outline-danger"  data-toggle="tooltip" title="更多查询" onclick='$("#searchArea").collapse("toggle");'>
-                <i class="fas fa-pastafarianism fa-1x" ></i>
-            </button>
+            <button type="button" id="expandAllBtn" class="btn btn-outline-info" data-toggle="tooltip"     title="展开/折叠" ><i class="fas fa-exchange-alt "></i></button>
         </div>  
     </div>
     <table id="table">      </table>
@@ -55,6 +32,7 @@
                 url: baseUrl,
                 fullTextUrl: prefix + "/fullTextList",
                 addUrl: prefix + "/add",
+                addChildUrl:prefix+"/addChild/",
                 editUrl: prefix + "/edit/",
                 delUrl: prefix + "/delete",
                 unDelUrl: prefix + "/undelete",
@@ -154,11 +132,9 @@
                     {title: '操作', align: 'center',
                         formatter: function (value, row, index) {
                             var actions = [];
-                            actions.push('<a class="btn btn-success btn-xs " href="#"  title="修改"  onclick="SysMenu.table.edit(\'' + row.id + '\')"><i class="fas fa-pencil-alt "></i></a> ');
-                            if (row.delFlag === 0)
-                                actions.push('<a class="btn btn-danger btn-xs " href="#"  title="删除"  onclick="SysMenu.table.delete(\'' + row.id + '\')"><i class="fas fa-trash-alt "></i></a> ');
-                            else
-                                actions.push('<a class="btn btn-info btn-xs " href="#"  title="恢复"  onclick="SysMenu.table.undelete(\'' + row.id + '\')"><i class="fas fa-undo "></i></a> ');
+                            actions.push('<a class="btn btn-success btn-sm " href="#"  title="添加菜单"  onclick="SysMenu.table.addChild(\'' + row.id + '\')"><i class="far fa-plus-square "></i></a> ');
+                            actions.push('<a class="btn btn-success btn-sm " href="#"  title="修改"  onclick="SysMenu.table.edit(\'' + row.id + '\')"><i class="fas fa-pencil-alt "></i></a> ');
+                            actions.push('<a class="btn btn-danger btn-sm " href="#"  title="删除"  onclick="SysMenu.table.delete(\'' + row.id + '\')"><i class="fas fa-trash-alt "></i></a> ');
                             return actions.join('');
                         }}
                 ];
@@ -237,10 +213,10 @@
             $("#expandAllBtn").click(function () {
                 if (!expandFlag) {
 //                   $('#table').bootstrapTreeTable('expandAll');
-                   SysMenu.table.btInstance.treegrid('expandAll');
+                    SysMenu.table.btInstance.treegrid('expandAll');
                 } else {
 //                    $('#table').bootstrapTreeTable('collapseAll');
-                   SysMenu.table.btInstance.treegrid('collapseAll');
+                    SysMenu.table.btInstance.treegrid('collapseAll');
                 }
                 expandFlag = expandFlag ? false : true;
             })

@@ -58,27 +58,8 @@ public class SysMenuController {
     @ResponseBody
     @GetMapping("/menuTreeData")
     public List<ZTreeNode> treeData() {
-//        List<Map<String, Object>> mapList = Lists.newArrayList();
         List<SysMenu> list = sysMenuService.findAll();
-
         return sysMenuService.convertTreeNodes(list);
-//        List<ZTreeNode> zl = ZTreeUtils.ConvertFromBaseTree(list);
-//        return zl;
-//        for (int i = 0; i < list.size(); i++) {
-//            SysMenu e = list.get(i);
-//            if (StringUtils.isEmpty(extId)
-//                    || (extId != null && !extId.equals(e.getId()) && e.getPids().indexOf("," + extId + ",") == -1)) {
-//                if (isShowHide != null && isShowHide.equals("0") && e.getIsShow().equals("0")) {
-//                    continue;
-//                }
-//                Map<String, Object> map = Maps.newHashMap();
-//                map.put("id", e.getId());
-//                map.put("pId", e.getPid());
-//                map.put("name", e.getName());
-//                mapList.add(map);
-//            }
-//        }
-//        return mapList;
     }
 
     @GetMapping("/icon")
@@ -93,6 +74,19 @@ public class SysMenuController {
     public String add(ModelMap mmap) {
         SysMenu sysMenu = new SysMenu();
         mmap.put("sysMenu", sysMenu);
+        return prefix + "/form";
+    }
+
+    /**
+     * 添加子菜单
+     */
+    @GetMapping("/addChild/{id}")
+    public String addChild(@PathVariable("id") Integer id, ModelMap mmap) {
+        SysMenu sysMenu = sysMenuService.findById(id);
+        SysMenu menu = new SysMenu();
+        menu.setPid(id);
+        menu.setParent(sysMenu);
+        mmap.put("sysMenu", menu);
         return prefix + "/form";
     }
 

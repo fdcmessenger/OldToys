@@ -109,11 +109,12 @@
 <body class="hold-transition box box-main">
     <input id="treeId"   name="treeId"    type="hidden" th:value="${menu.id}"/>
     <input id="treeName" name="treeName"  type="hidden" th:value="${menu.name}"/>
-    <div class="wrapper"><div class="treeShowHideButton" onclick="$.tree.toggleSearch();">
-            <label id="btnShow" title="显示搜索" style="display:none;">︾</label>
-            <label id="btnHide" title="隐藏搜索">︽</label>
+    <div class="wrapper">
+        <div class="treeShowHideButton" onclick="$.tree.toggleSearch();">
+            <label id="btnShow" title="显示搜索">︾</label>
+            <label id="btnHide" title="隐藏搜索" style="display:none;">︽</label>
         </div>
-        <div class="treeSearchInput" id="search">
+        <div class="treeSearchInput" id="search" style="display:none;">
             <label for="keyword">关键字：</label><input type="text" class="empty" id="keyword" maxlength="50">
             <button class="btn" id="btn" onclick="$.tree.searchNode()"> 搜索 </button>
         </div>
