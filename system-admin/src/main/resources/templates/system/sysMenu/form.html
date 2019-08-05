@@ -10,8 +10,8 @@
             <label for="treeName" class="col-sm-2 col-form-label">上级菜单</label>
             <input type="hidden" id="treeId" name="pid" th:field="*{pid}">
             <div class="col-sm-10 input-group">
-                <input class="form-control" type="text" onclick="selectMenuTree()" id="treeName" readonly="true" th:value="${sysMenu.parent == null ? '无' : sysMenu.parent.name}">
-                <span class="input-group-addon"><i class="fa fa-search fa-2x"></i></span>
+                <input class="form-control" type="text" onclick="selectMenuTree()" name="treeName" id="treeName" readonly="true" th:value="${sysMenu.parent == null ? '' : sysMenu.parent.name}">
+                <!--                <span class="input-group-addon"><i class="fa fa-search fa-2x"></i></span>-->
             </div>
         </div>
         <div class="form-group row">
@@ -70,7 +70,7 @@
         <div class="form-group row">
             <label for="sort" class="col-sm-2 col-form-label">排序</label>
             <div class="col-sm-10">
-                <input type="text" id="sort" name="sort" th:field="*{sort}" class="form-control" placeholder="排序">
+                <input type="text" id="sort" name="sort" th:value="*{sort!=null?sort:30}" class="form-control" >
             </div>
         </div>   
 
@@ -127,12 +127,24 @@
         var prefix = "/system/sysMenu";
         $("#sysMenuForm").validate({
             rules: {
-                intField: {
-                    required: true,
-                    digits: true
+                treeName: {
+                    required: function (element) {
+                        console.log('validate pid')
+                        var tp = $("input[name='menuType']:checked").val();
+                        if (tp && tp !== 'M')
+                            return true;
+                        else
+                            return false;
+//                        return true;
+                    }
                 },
-                varcharField: {
+                name: {
                     required: true,
+                }
+            },
+            messages: {
+                treeName: {
+                    required: "菜单与按钮类型需要上级菜单项"
                 }
             }
         });
@@ -156,18 +168,50 @@
             var treeId = $("#treeId").val();
             var menuId = treeId > 0 ? treeId : 1;
             var url = prefix + "/selectMenuTree/" + menuId;
-            var options = {
+//            var options = {
+//                title: '菜单选择',
+//                width: "380",
+//                url: url,
+//                callBack: doSubmit,
+//                clean: doClean,
+//            };
+//            $.popup.openOptions(options);
+            layer.open({
+                type: 2,
+                maxmin: true,
+                shade: 0.3,
                 title: '菜单选择',
-                width: "380",
-                url: url,
-                callBack: doSubmit
-            };
-            $.popup.openOptions(options);
+                fix: false,
+                area: [380 + 'px', ($(window).height() - 50) + 'px'],
+                content: url,
+                shadeClose: true,
+                btn: ['选择', '清除', '关闭'],
+                yes: function (index, layero) {
+                    doSubmit(index, layero);
+                }, 
+                btn2: function (index, layero) {
+                    doClean(index, layero);
+//                    return false;
+                }, cancel: function () {
+                    return true;
+                }
+            });
+
+
+
         }
         function doSubmit(index, layero) {
+//            alert('dosubmit');
             var body = layer.getChildFrame('body', index);
             $("#treeId").val(body.find('#treeId').val());
             $("#treeName").val(body.find('#treeName').val());
+            layer.close(index);
+        }
+        function doClean(index, layero) {
+//            alert('doClean');
+//            var body = layer.getChildFrame('body', index);
+            $("#treeId").val("");
+            $("#treeName").val("");
             layer.close(index);
         }
         function submitHandler() {

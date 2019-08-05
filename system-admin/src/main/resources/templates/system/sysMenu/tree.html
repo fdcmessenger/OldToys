@@ -132,17 +132,28 @@
         var options = {
             url: url,
             expandLevel: 1,
-            onClick: zOnClick
+            onClick: zOnClick,
+//            onDblClick: zOnDblClick
         };
         $.tree.init(options);
     });
 
     function zOnClick(event, treeId, treeNode) {
+//        alert('zOnClick')
         var treeId = treeNode.id;
         var treeName = treeNode.name;
         $("#treeId").val(treeId);
         $("#treeName").val(treeName);
     }
+//    function zOnDblClick(event, treeId, treeNode) {
+////        alert('zOnDblClick')
+//        var treeId = treeNode.id;
+//        var treeName = treeNode.name;
+//        $("#treeId").val(treeId);
+//        $("#treeName").val(treeName);
+//        var index = parent.layer.getFrameIndex(window.name);//获取当前弹窗的Id
+//	parent.layer.close(index);//关闭
+//    }
 </script>
 </body>
 </html>
