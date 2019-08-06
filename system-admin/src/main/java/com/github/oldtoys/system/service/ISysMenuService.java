@@ -20,6 +20,11 @@ public interface ISysMenuService extends BaseTreeService<SysMenu, Integer> {
      * @return 系统菜单集合
      */
     public List<SysMenu> selectSysMenuList(SysMenu sysMenu);
+    /**
+     * 选择所有可以做为父节点的数据
+     * @return 
+     */
+    public List<SysMenu> findAllParents();
 
     public boolean checkMeunLevelOk(SysMenu menu);
 }

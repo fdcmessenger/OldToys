@@ -22,7 +22,7 @@ public class SysMenu extends TreeEntity<SysMenu> {
      */
     private String name;
     
-    private String menuType;
+    private Integer menuType;
     /**
      * 网址链接
      */

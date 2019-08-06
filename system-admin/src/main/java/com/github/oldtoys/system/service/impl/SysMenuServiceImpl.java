@@ -48,4 +48,9 @@ public class SysMenuServiceImpl extends BaseTreeServiceImpl<SysMenu, Integer> im
             return false;
         }
     }
+
+    @Override
+    public List<SysMenu> findAllParents() {
+       return  sysMenuMapper.findAllParents();
+    }
 }

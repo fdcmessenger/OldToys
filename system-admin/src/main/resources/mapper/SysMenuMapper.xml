@@ -38,6 +38,12 @@
             <if test="name != null  and name != '' "> and name = #{name}</if>
         </where>
     </select>
+    <select id="findAllParents"  resultMap="SysMenuResult">
+        <include refid="selectSysMenuVo"/>
+        <where>  
+           menu_type in  (1,2)
+        </where>
+    </select>
    <select id="findById" resultMap="parentResultMap" >
         SELECT  a.* ,
         <include refid="parentSelect"/>

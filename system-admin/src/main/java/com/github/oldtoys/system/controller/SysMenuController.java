@@ -58,7 +58,7 @@ public class SysMenuController {
     @ResponseBody
     @GetMapping("/menuTreeData")
     public List<ZTreeNode> treeData() {
-        List<SysMenu> list = sysMenuService.findAll();
+        List<SysMenu> list = sysMenuService.findAllParents();
         return sysMenuService.convertTreeNodes(list);
     }
 
@@ -86,6 +86,7 @@ public class SysMenuController {
         SysMenu menu = new SysMenu();
         menu.setPid(id);
         menu.setParent(sysMenu);
+        menu.setMenuType(sysMenu.getMenuType()+1);
         mmap.put("sysMenu", menu);
         return prefix + "/form";
     }

@@ -21,4 +21,6 @@ public interface SysMenuMapper extends BaseTreeDao<SysMenu, Integer> {
      */
     public List<SysMenu> selectSysMenuList(SysMenu sysMenu);
 
+    public List<SysMenu> findAllParents();
+
 }
